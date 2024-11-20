@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streak Feature</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+            /* Add transition for background */
+        }
+
+        .header {
+            background-color: #007bff;
+            /* Blue header */
+            padding: 20px;
+            border-radius: 15px;
+            /* Rounded top corners */
+            text-align: center;
+            max-width: 90%;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 0 0 15px 15px;
+            /* Rounded bottom corners */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: #fff;
+            /* White text for header */
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 10px;
+            display: inline-block;
+            padding-left: 20px;
+            margin: 20px;
+            position: relative;
+            font-weight: 80;
+        }
+
+        p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            /* Smaller font size */
+            color: #555;
+        }
+
+        .streak-info {
+            font-size: 16px;
+            color: #007bff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .streak-info .fire-emoji {
+            font-size: 36px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            /* Reduced height */
+            margin: 15px;
+            background-color: #eee;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background-color: #007bff;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-right: 10px;
+            width: 60px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .streak-history {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .streak-history h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        .streak-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .streak-entry:last-child {
+            border-bottom: none;
+        }
+
+        .streak-date {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .streak-duration {
+            color: #007bff;
+            font-size: 0.9rem;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .notification.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: #fff;
+            margin-left: 5px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /* Goal Notification Styles */
+        .goal-notification {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 123, 255, 0.9);
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 15px;
+            display: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            font-size: 1rem;
+            max-width: 90%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .goal-notification.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .goal-notification .emoji {
+            font-size: 1.8em;
+            margin-right: 10px;
+        }
+
+        .goal-notification .quote {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .goal-notification .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .goal-notification .details div {
+            margin-bottom: 5px;
+        }
+
+        .goal-notification .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            /* Reduced size */
+            color: #fff;
+        }
+
+        /* Day Tracker Visuals */
+        .day-tracker {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .day-checkmark {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin: 5px;
+            border: 2px solid #ccc;
+            background-color: #fff;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .day-checkmark.active {
+            background-color: #007bff;
+            border: 2px solid #007bff;
+        }
+
+        .day-checkmark::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: none;
+        }
+
+        .day-checkmark.active::before {
+            display: block;
+        }
+
+        /* Responsive Styling (for mobile screens) */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .streak-info {
+                font-size: 14px;
+            }
+
+            .streak-info .fire-emoji {
+                font-size: 28px;
+            }
+
+            .streak-history {
+                margin-top: 15px;
+            }
+
+            .streak-history h3 {
+                font-size: 1.4rem;
+            }
+
+            .goal-notification {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Dark Mode Styles */
+        .dark-mode {
+            background-color: #222;
+            color: #fff;
+        }
+
+        .dark-mode .header {
+            background-color: #333;
+            /* Darker blue for header */
+        }
+
+        .dark-mode h2 {
+            color: #fff;
+        }
+
+        .dark-mode .streak-info {
+            color: #fff;
+
+        }
+
+        .dark-mode .container {
+            background-color: black;
+        }
+
+        .dark-mode .progress-bar {
+            background-color: #444;
+            /* Darker gray for progress bar */
+        }
+
+        .dark-mode .progress-bar .fill {
+            background-color: #007bff;
+            /* Blue fill remains the same */
+        }
+
+        .dark-mode .input-group label {
+            color: #fff;
+        }
+
+        .dark-mode input[type="number"] {
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+        }
+
+        .dark-mode button {
+            background-color: #007bff;
+            /* Blue button remains the same */
+            border: none;
+            color: #fff;
+        }
+
+        .dark-mode .streak-history {
+            border: 1px solid #555;
+            /* Darker gray border for history */
+        }
+
+        .dark-mode .streak-history h3 {
+            color: blue;
+        }
+
+        .dark-mode .streak-entry {
+            border-bottom: 1px solid #444;
+            /* Darker gray border for entries */
+        }
+
+        .dark-mode .streak-date,
+        .dark-mode .streak-duration {
+            color: #fff;
+        }
+
+        .dark-mode .day-checkmark {
+            border: 2px solid #555;
+            /* Darker gray border for checkmarks */
+        }
+
+        .dark-mode .day-checkmark.active {
+            background-color: #007bff;
+            border: 2px solid #007bff;
+        }
+
+        .dark-mode .notification {
+            background-color: #333;
+            /* Darker blue for notification */
+        }
+
+        .dark-mode .badge {
+            background-color: #333;
+            /* Darker blue for badge */
+        }
+
+        .dark-mode .goal-notification {
+            background-color: #333;
+            /* Darker blue for goal notification */
+        }
+
+        .dark-mode .goal-notification h2 {
+            color: #fff;
+        }
+
+        .dark-mode .goal-notification .quote {
+            color: #ddd;
+            /* Light gray for quote */
+        }
+
+        .dark-mode .goal-notification .details div {
+            color: #fff;
+        }
+
+        .dark-mode .goal-notification .close-button {
+            color: #fff;
+        }
+
+        .dark-mode .footer {
+            background-color: black;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #f0f0f0;
+            padding: 15px 0;
+            text-align: center;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        /* Theme Button Styles */
+        .theme-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 60;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            /* Ensure theme button stays on top */
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+        }
+
+        .theme-button:hover {
+            background-color: #ddd;
+        }
+
+        .theme-button.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .theme-button span {
+            margin-left: 5px;
+        }
+
+        .theme-button.active span {
+            color: #fff;
+        }
+
+        .theme-button.active span:before {
+            content: " ";
+            color: #fff;
+            /* Or any color you like */
+        }
+
+        .theme-button:not(.active) span:before {
+            content: " ";
+            color: #333;
+            /* Or any color you like */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header" style="width:80%;">
+        <h1>🔥 Streak Tracker </h1>
+    </div>
+    <div class="container">
+        <button class="theme-button active" id="theme-button" style="border-radius: 100% ; background-color:#fac42a;">🌙</button>
+        <h2>Your Streak </h2>
+        <p>Track your study streaks and stay motivated! This simple yet effective feature will help you keep track of your daily
+            progress and stay on top of your goals. Consistency is key to success, and this tool will help you visualize your
+            commitment.</p>
+        <div class="streak-info">
+            Current Streak: <span id="streak-count">0</span> days 🔥<span class="fire-emoji"> </span>
+        </div>
+        <span id="badge-container"></span> <!-- Container for badges -->
+
+        <div class="progress-bar">
+            <div class="fill" id="progress-fill"></div>
+        </div>
+
+        <div class="input-group">
+            <label for="streak-input">Add to Streak:</label>
+            <input type="number" id="streak-input" min="1" value="1" readonly>
+            <button id="increment-streak">Increment</button>
+            <button id="clear-streak">Clear Streak</button>
+        </div>
+
+        <div class="input-group">
+            <label for="goal-input">Goal Streak:</label>
+            <input type="number" id="goal-input" min="1" value="10">
+            <button id="set-goal">Set Goal</button>
+        </div>
+
+        <div class="streak-history">
+            <h3>Streak History</h3>
+            <ul id="streak-log">
+            </ul>
+        </div>
+
+        <!-- Day Tracker Visual -->
+        <div class="day-tracker" id="day-tracker">
+            <!-- Day checkmarks will be added dynamically -->
+        </div>
+
+        <div class="notification" id="notification">
+            🎉 Congratulations! You've reached a new streak! 🎉 </div>
+
+
+        <div class="goal-notification" id="goal-notification">
+            <h2 style="color:red;font-size:20px;"><img style="border-radius:10px;" src="https://blogger.googleusercontent.com/img/a/AVvXsEiqXoX94Byma-HkW8CjzILD6bv1onaBK5xnN-gkAWlfQboMqaD7yyPu9Gkyujqsh5lJo9BPqTV6Kjz-Z6GuzzaFp3QeKZwYoNnxK-3GwDCM_8V5yNscaJr_AEBe1D2H2AhyKFQdeBZQUqDsnHG1wSprnb-cIK4MS3hRFn1AnDyXxNt4y72MI_fPJf193euF">Beam Focus</h2>
+            <span class="quote"><br>Congratulations! <br>You did it! Keep up the amazing work!</span><br>
+            <span class="emoji"><br> 🥳 💪</span>
+            <div class="details">
+                <div style="margin-left:10px;">Current <br> Streak 🔥: <span id="goal-notification-streak"></span> days</div>
+                <div>Goal <br> Streak 🔥: <span id="goal-notification-goal"></span> days</div>
+            </div>
+            <button class="close-button" id="close-button">×</button>
+        </div>
+    </div>
+
+
+
+    <footer class="footer">
+        © 2024 Beam Focus. All rights reserved.
+        <div class="text-center mt-5" style="width: 100%; bottom: 0; background-color: #000000; padding: 5px 0; color: #1d7990; border-radius: 2px; display: flex; justify-content: center;">
+            <p style="margin: 0; font-family: 'Arial', sans-serif;">
+                Developed by <strong style="text-shadow: 2px 2px 0 white, -2px -2px 0 white;">S. A. M.</strong>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const streakCountElement = document.getElementById('streak-count');
+            const incrementButton = document.getElementById('increment-streak');
+            const streakInput = document.getElementById('streak-input');
+            const streakLog = document.getElementById('streak-log');
+            const progressFill = document.getElementById('progress-fill');
+            const goalInput = document.getElementById('goal-input');
+            const setGoalButton = document.getElementById('set-goal');
+            const badgeContainer = document.getElementById('badge-container');
+            const clearStreakButton = document.getElementById('clear-streak');
+            const dayTracker = document.getElementById('day-tracker');
+            const downloadButton = document.getElementById('download-button');
+            const closeButton = document.getElementById('close-button');
+            const themeButton = document.getElementById('theme-button');
+            let streakCount = 0;
+            let streakHistory = [];
+            let goalStreak = 10; // Initial goal streak
+            let lastIncrementTime = 0; // Track last increment time
+            let isDarkMode = false; // Track theme state
+
+            // Load streak data from local storage
+            loadStreakData();
+            updateDayTracker(); // Initialize day tracker
+            updateTheme(); // Initialize theme on load
+
+            function updateStreak(amount) {
+                // Check if today's streak has already been incremented
+                const today = new Date().toLocaleDateString();
+                const lastEntry = streakHistory[streakHistory.length - 1];
+                if (lastEntry && lastEntry.date === today) {
+                    alert("You can only add 1 day to your streak per day.");
+                    return;
+                }
+
+                // Update streak and history
+                streakCount += amount;
+                streakCountElement.textContent = streakCount;
+                streakHistory.push({
+                    date: today, // Store today's date in the history
+                    duration: amount
+                });
+                updateStreakLog();
+                updateProgressBar();
+                checkStreakMilestone();
+                saveStreakData(); // Save streak data after each increment
+                awardBadges(); // Award badges based on streak
+                updateDayTracker(); // Update day tracker
+
+                // Disable increment button for 24 hours
+                incrementButton.disabled = true;
+                lastIncrementTime = Date.now();
+                setTimeout(() => {
+                    incrementButton.disabled = false;
+                }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+            }
+
+            function updateStreakLog() {
+                streakLog.innerHTML = ''; // Clear existing log
+
+                streakHistory.forEach(entry => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('streak-entry');
+                    listItem.innerHTML = `
+                        <span class="streak-date">${entry.date}</span>
+                        <span class="streak-duration">+${entry.duration} days</span>
+                    `;
+                    streakLog.appendChild(listItem);
+                });
+            }
+
+            function updateProgressBar() {
+                const progressPercentage = (streakCount / goalStreak) * 100;
+                progressFill.style.width = progressPercentage + '%';
+            }
+
+            function showNotification() {
+                const notification = document.getElementById('notification');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+
+            function checkStreakMilestone() {
+                if (streakCount % 1 === 0 && streakCount > 0) {
+                    showNotification();
+                }
+
+                if (streakCount >= goalStreak) {
+                    showGoalNotification();
+                }
+            }
+
+            function setGoalStreak() {
+                goalStreak = parseInt(goalInput.value) || 10;
+                updateProgressBar(); // Update progress bar with new goal
+                updateDayTracker(); // Update day tracker based on new goal
+                saveStreakData(); // Save the new goal streak
+            }
+
+            // Award badges based on streak milestones
+            function awardBadges() {
+                badgeContainer.innerHTML = ''; // Clear existing badges
+
+                if (streakCount >= 5) {
+                    const badge = document.createElement('span');
+                    badge.classList.add('badge');
+                    badge.textContent = '5 Day Streak';
+                    badgeContainer.appendChild(badge);
+                }
+
+                if (streakCount >= 10) {
+                    const badge = document.createElement('span');
+                    badge.classList.add('badge');
+                    badge.textContent = '10 Day Streak';
+                    badgeContainer.appendChild(badge);
+                }
+
+                // Add more badge logic for other milestones
+            }
+
+            function saveStreakData() {
+                localStorage.setItem('streakCount', streakCount);
+                localStorage.setItem('streakHistory', JSON.stringify(streakHistory));
+                localStorage.setItem('goalStreak', goalStreak); // Save goalStreak
+            }
+
+            function loadStreakData() {
+                const savedStreakCount = localStorage.getItem('streakCount');
+                const savedStreakHistory = localStorage.getItem('streakHistory');
+                const savedGoalStreak = localStorage.getItem('goalStreak'); // Load goalStreak
+
+                if (savedStreakCount !== null) {
+                    streakCount = parseInt(savedStreakCount);
+                    streakCountElement.textContent = streakCount;
+                }
+
+                if (savedStreakHistory !== null) {
+                    streakHistory = JSON.parse(savedStreakHistory);
+                    updateStreakLog();
+                    updateProgressBar();
+                    awardBadges();
+                    updateDayTracker(); // Update day tracker on load
+                }
+
+                if (savedGoalStreak !== null) {
+                    goalStreak = parseInt(savedGoalStreak); // Load goalStreak
+                    goalInput.value = goalStreak; // Update the input field
+                }
+            }
+
+            function showGoalNotification() {
+                const notification = document.getElementById('goal-notification');
+                const streakDisplay = document.getElementById('goal-notification-streak');
+                const goalDisplay = document.getElementById('goal-notification-goal');
+                notification.classList.add('show');
+
+                streakDisplay.textContent = streakCount;
+                goalDisplay.textContent = goalStreak;
+
+                closeButton.addEventListener('click', function() {
+                    notification.classList.remove('show');
+                });
+            }
+
+            // Function to update the day tracker visual
+            function updateDayTracker() {
+                dayTracker.innerHTML = ''; // Clear existing checkmarks
+
+                // Create checkmarks for each day in the streak
+                for (let i = 0; i < goalStreak; i++) {
+                    const checkmark = document.createElement('div');
+                    checkmark.classList.add('day-checkmark');
+
+                    // Mark checkmarks as active if the day is within the current streak
+                    if (i < streakCount) {
+                        checkmark.classList.add('active');
+                    }
+
+                    dayTracker.appendChild(checkmark);
+                }
+            }
+
+            function updateTheme() {
+                if (isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    themeButton.textContent = '☀️';
+                    themeButton.style.backgroundColor = '#007bff'; // Set background to blue
+                    themeButton.style.color = '#fff'; // Set text to white
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    themeButton.textContent = '🌙';
+                    themeButton.style.backgroundColor = '#007bff'; // Reset background
+                    themeButton.style.color = '#333'; // Reset text
+                }
+            }
+
+            incrementButton.addEventListener('click', function() {
+                const amount = parseInt(streakInput.value) || 1;
+                updateStreak(amount);
+            });
+
+            setGoalButton.addEventListener('click', setGoalStreak);
+
+            clearStreakButton.addEventListener('click', function() {
+                if (confirm("Are you sure you want to clear your streak?")) {
+                    streakCount = 0;
+                    streakHistory = [];
+                    streakCountElement.textContent = streakCount;
+                    updateStreakLog();
+                    updateProgressBar();
+                    awardBadges();
+                    saveStreakData();
+                    updateDayTracker(); // Reset day tracker
+                }
+            });
+
+            themeButton.addEventListener('click', function() {
+                isDarkMode = !isDarkMode;
+                updateTheme();
+            });
+
+            // Example: Add some initial streak history
+            // updateStreak(3);
+            // updateStreak(1);
+        });
+    </script>
+
+    <!-- Include the html2canvas library -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</body>
+
+</html>
