@@ -1,9 +1,10 @@
 # Beam-Focus-3.0
-A learning Portal , 3.0 version of Beam Focus
-Watch Video
+A learning Portal , 3.0 version of Beam Focus....
+
+Watch Video:
 https://youtu.be/92lggxSixbI?si=kX4ORqJ-PWs1eFn0
 
-# Total 2,091+840+451+338+598 = *4,318* lines of code
+**Total 2,091+840+451+338+598 = **4,318** lines of code**
 
 # 🌟 Beam Focus 3.0 🌟  
 The most **automated**, **user-friendly**, and **beautiful** version of Beam Focus—a transformative learning portal! 🚀  
