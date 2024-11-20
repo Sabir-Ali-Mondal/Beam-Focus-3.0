@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Notepad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: white;
+            color: #333;
+        }
+
+        h2 {
+            color: black;
+            font-family: Arial;
+            font-weight: bold;
+            text-shadow: 2px 1px #ff0000;
+        }
+
+        .toolbar {
+            background-color: #e0f7fa;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .toolbar button {
+            margin-right: 5px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .toolbar button:hover {
+            background-color: #1976d2;
+        }
+
+        #notepad {
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid #90caf9;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #lineNumbers {
+            height: 390px;
+            overflow-y: auto;
+            padding-top: 15px;
+            border-right: 1px solid #90caf9;
+            border-radius: 10px;
+            min-width: 40px;
+            text-align: right;
+            user-select: none;
+            color: #6c757d;
+            margin: 5px;
+        }
+
+        .highlight {
+            background-color: yellow;
+        }
+
+        #highlightOptions {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #highlightOptions li {
+            cursor: pointer;
+            padding: 3px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        #highlightOptions li:hover {
+            background-color: #f0f0f0;
+        }
+
+        #highlightOptions li span.color-swatch {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+        }
+
+        #savedNotesList {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+
+        .note-item {
+            margin-bottom: 10px;
+            border: 1px solid #90caf9;
+            padding: 10px;
+            word-break: break-word;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-title {
+            background-color: #e0f7fa;
+            border-bottom: 1px solid #90caf9;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .note-content {
+            padding: 5px 10px;
+        }
+
+        .note-actions {
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .note-actions button {
+            margin-left: 5px;
+            border-radius: 5px;
+        }
+
+        #helpButton {
+            position: absolute;
+            font-size: 10px;
+            font-family: italic;
+            top: 50px;
+            right: 50px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #helpButton:hover {
+            background-color: #45a049;
+        }
+
+        .bi-check2-square {
+            font-size: 15px;
+            color: lightgreen;
+        }
+
+        .note-actions button.update-button {
+            background-color: #007bff !important;
+        }
+
+        #clearAllButton {
+            margin-left: 10px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+
+        #clearAllButton:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body class="container my-4">
+    <h2 class="text-center">Enhanced Notepad</h2>
+    <p class="text-secondary">Developed by <strong>S. A. M.</strong></p>
+
+    <!-- Toolbar -->
+    <div class="btn-toolbar mb-2 container toolbar" role="toolbar">
+        <div class="btn-group row me-2">
+            <div class="col-12 col-md-6">
+                <!-- Formatting Buttons -->
+                <button class="btn m-1" onclick="formatText('bold')"><i class="bi bi-type-bold"></i></button>
+                <button class="btn m-1" onclick="formatText('italic')"><i class="bi bi-type-italic"></i></button>
+                <button class="btn m-1" onclick="formatText('underline')"><i class="bi bi-type-underline"></i></button>
+                <button class="btn m-1" onclick="formatText('strikeThrough')"><i class="bi bi-type-strikethrough"></i></button>
+                <!-- Alignment Buttons -->
+                <button class="btn m-1" onclick="formatText('justifyLeft')"><i class="bi bi-text-left"></i></button>
+                <button class="btn m-1" onclick="formatText('justifyCenter')"><i class="bi bi-text-center"></i></button>
+                <button class="btn m-1" onclick="formatText('justifyRight')"><i class="bi bi-text-right"></i></button>
+            </div>
+            <div class="col-12 col-md-6">
+                <!-- Lists and Task Lists -->
+                <button class="btn m-1" onclick="formatText('insertOrderedList')"><i class="bi bi-list-ol"></i></button>
+                <button class="btn m-1" onclick="formatText('insertUnorderedList')"><i class="bi bi-list-ul"></i></button>
+                <button class="btn m-1" onclick="createTaskListItem()"><i class="bi-check2-square"></i></button>
+                <!-- Insert Image -->
+                <button class="btn m-1" onclick="document.getElementById('imageInput').click()"><i class="bi bi-image"></i></button>
+                <input type="file" id="imageInput" accept="image/*" onchange="insertLocalImage()" style="display:none;">
+                <!-- Undo and Redo -->
+                <button class="btn m-1" onclick="undo()"><i class="bi bi-arrow-counterclockwise"></i></button>
+                <button class="btn m-1" onclick="redo()"><i class="bi bi-arrow-clockwise"></i></button>
+                <!-- Clear Notepad -->
+                <button class="btn m-1" onclick="clearNotepad()"><i class="bi bi-trash"></i> Clear</button>
+            </div>
+
+            <div class="col-12 col-md-6 mt-1">
+                <!-- Font Size Control -->
+                <button class="btn m-1" onclick="changeFontSize('decrease')"><i class="bi bi-caret-down-fill"></i></button>
+                <button class="btn m-1" onclick="changeFontSize('increase')"><i class="bi bi-caret-up-fill"></i></button>
+                <!-- Paste as Plain Text -->
+                <button class="btn m-1" onclick="pastePlainText()"><i class="bi bi-clipboard"></i> Paste</button>
+                <!-- Text Color -->
+                <input class="m-1" type="color" id="textColor" value="#000000" onchange="changeTextColor(this.value)">
+                <div class="row">
+                    <div class="col-7">
+                        <!-- Font Selection --> <select class="form-select m-1" id="fontSelect" onchange="changeFont(this.value)">
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Helvetica">Helvetica</option>
+                        </select>
+                    </div>
+                    <div class="col-5">
+                        <button class="btn m-1" id="toggleHighlight" onclick="toggleHighlightOptions()">Highlight</button>
+                        <div id="highlightOptions">
+                            <ul>
+                                <li class="text-danger" onclick="closeHighlightOptions()"><span><i class="bi bi-x-circle"></i></span> Close</li>
+                                <li onclick="setHighlightColor('none')"><span class="color-swatch" style="background-color: none;"></span>Default</li>
+                                <li onclick="setHighlightColor('yellow')"><span class="color-swatch" style="background-color: yellow;"></span>Yellow</li>
+                                <li onclick="setHighlightColor('green')"><span class="color-swatch" style="background-color: green;"></span>Green</li>
+                                <li onclick="setHighlightColor('orange')"><span class="color-swatch" style="background-color: orange;"></span>Orange</li>
+                                <li onclick="setHighlightColor('pink')"><span class="color-swatch" style="background-color: pink;"></span>Pink</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <!-- Character Count Display -->
+    <span id="charCount" class="badge bg-secondary m-1">Characters: 0</span>
+    <!-- Export as HTML -->
+    <button class="btn bg-warning p-1 text-white m-1" onclick="exportAsHTML()"><i class="bi bi-file-earmark-code"></i> Export HTML</button>
+    <button class="btn bg-success p-1 text-white  m-1" id="saveOrUpdateButton" onclick="saveNote()"><i class="bi bi-save"></i> Save</button>
+    <!-- Notepad with Line Numbers -->
+    <div class="d-flex mb-4 mt-2">
+        <div id="lineNumbers" class="p-2"></div>
+        <div id="notepad" contenteditable="true" class="border rounded bg-light flex-grow-1" oninput="displayLineNumbers()" onmouseup="highlightIfSelected()"></div>
+    </div>
+    <hr>
+    <!-- Note Saver -->
+    <div id="noteSaver">
+        <h5>Saved Notes</h5>
+        <button id="clearAllButton" class="btn btn-danger mb-2 p-1" onclick="clearAllNotes()">Clear All Notes</button>
+        <ul id="savedNotesList"></ul>
+    </div>
+
+    <!-- Help Button -->
+    <button id="helpButton" class="btn" onclick="openHelp()">
+        <i class="bi bi-question-circle"></i> Help
+    </button>
+
+    <!-- Highlight Color Picker (Hidden by default) -->
+    <div id="highlightMenu" style="display: none; position: absolute;">
+        <ul>
+            <li onclick="highlightText('yellow')">Yellow</li>
+            <li onclick="highlightText('green')">Green</li>
+            <li onclick="highlightText('blue')">Blue</li>
+            <li onclick="highlightText('orange')">Orange</li>
+            <li onclick="highlightText('pink')">Pink</li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAutoSavedContent();
+            updateCharacterCount();
+            displayLineNumbers();
+            displaySavedNotes();
+        });
+
+        let undoStack = [];
+        let redoStack = [];
+        let savedNotes = [];
+        let highlightEnabled = false;
+        let highlightColor = 'yellow';
+        let editingNoteIndex = -1;
+
+        // Format Text (Bold, Italic, etc.)
+        function formatText(command) {
+            document.execCommand(command, false, null);
+            saveUndoState();
+            updateCharacterCount();
+        }
+
+        // Insert Local Image
+        function insertLocalImage() {
+            const file = document.getElementById('imageInput').files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100%';
+                document.getElementById('notepad').appendChild(img);
+            };
+            if (file) reader.readAsDataURL(file);
+            saveUndoState();
+            updateCharacterCount();
+        }
+
+        // Font Controls
+        function changeFont(font) {
+            document.getElementById('notepad').style.fontFamily = font;
+            saveUndoState();
+        }
+
+        function changeFontSize(action) {
+            const notepad = document.getElementById('notepad');
+            let currentSize = parseInt(notepad.style.fontSize) || 16;
+            if (action === 'increase') currentSize += 2;
+            else if (action === 'decrease') currentSize -= 2;
+            notepad.style.fontSize = currentSize + 'px';
+            saveUndoState();
+        }
+
+        // Color Controls
+        function changeTextColor(color) {
+            document.execCommand('foreColor', false, color);
+            saveUndoState();
+        }
+
+
+        // Character Count
+        function updateCharacterCount() {
+            const content = document.getElementById('notepad').innerText;
+            document.getElementById('charCount').innerText = `Characters: ${content.length}`;
+        }
+
+        // Task List Creation
+        function createTaskListItem() {
+            const taskItem = '<div><input type="checkbox"> Task</div>';
+            document.execCommand('insertHTML', false, taskItem);
+            saveUndoState();
+        }
+
+        // Undo/Redo
+        function undo() {
+            if (undoStack.length > 1) {
+                redoStack.push(undoStack.pop());
+                document.getElementById('notepad').innerHTML = undoStack[undoStack.length - 1];
+                updateCharacterCount();
+                displayLineNumbers();
+            }
+        }
+
+        function redo() {
+            if (redoStack.length > 0) {
+                undoStack.push(redoStack.pop());
+                document.getElementById('notepad').innerHTML = undoStack[undoStack.length - 1];
+                updateCharacterCount();
+                displayLineNumbers();
+            }
+        }
+
+        // Clear Notepad
+        function clearNotepad() {
+            if (confirm('Are you sure you want to clear the notepad?')) {
+                document.getElementById('notepad').innerHTML = '';
+                undoStack = [];
+                redoStack = [];
+                updateCharacterCount();
+                displayLineNumbers();
+            }
+        }
+
+        // Save undo state
+        function saveUndoState() {
+            undoStack.push(document.getElementById('notepad').innerHTML);
+            redoStack = [];
+        }
+
+        // Line Numbers Display
+        function displayLineNumbers() {
+            const notepad = document.getElementById('notepad');
+            const lineNumbers = document.getElementById('lineNumbers');
+            const content = notepad.innerText;
+            const lines = content.split(/\n/).length;
+
+            lineNumbers.innerHTML = '';
+            for (let i = 1; i <= lines; i++) {
+                const lineNumber = document.createElement('div');
+                lineNumber.textContent = i;
+                lineNumbers.appendChild(lineNumber);
+            }
+        }
+
+        document.getElementById('notepad').addEventListener('input', () => {
+            saveUndoState();
+            displayLineNumbers();
+            updateCharacterCount();
+        });
+
+        document.getElementById('notepad').addEventListener('scroll', () => {
+            document.getElementById('lineNumbers').scrollTop = document.getElementById('notepad').scrollTop;
+        });
+
+        // Export as HTML
+        function exportAsHTML() {
+            const content = document.getElementById('notepad').innerHTML;
+            const blob = new Blob([content], {
+                type: 'text/html'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'note.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Paste Plain Text
+        function pastePlainText() {
+            navigator.clipboard.readText().then(text => {
+                document.execCommand('insertText', false, text);
+                saveUndoState();
+                updateCharacterCount();
+            });
+        }
+
+        //Improved Highlighting
+        function toggleHighlightOptions() {
+            const highlightOptions = document.getElementById('highlightOptions');
+            highlightOptions.style.display = highlightOptions.style.display === 'block' ? 'none' : 'block';
+            highlightEnabled = !highlightEnabled;
+            document.getElementById('toggleHighlight').textContent = highlightEnabled ? 'Highlight (Enabled)' : 'Highlight';
+        }
+
+        function setHighlightColor(color) {
+            highlightColor = color;
+            document.getElementById('highlightOptions').style.display = 'none';
+        }
+
+        function highlightIfSelected() {
+            if (highlightEnabled && window.getSelection().toString()) {
+                highlightSelectedText(highlightColor);
+            }
+        }
+
+        function highlightSelectedText(color) {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const newNode = document.createElement('span');
+                newNode.style.backgroundColor = color;
+                newNode.appendChild(range.extractContents());
+                range.insertNode(newNode);
+                selection.removeAllRanges();
+                saveUndoState();
+            }
+        }
+
+        // Note Saving with Edit/Delete (Edit function modified)
+        function saveNote() {
+            const notepadContent = document.getElementById('notepad').innerHTML;
+            const title = generateTitle(notepadContent);
+            const note = {
+                title,
+                content: notepadContent
+            };
+
+            if (editingNoteIndex !== -1) {
+                // Update existing note
+                savedNotes[editingNoteIndex] = note;
+            } else {
+                // Add new note
+                savedNotes.push(note);
+            }
+            localStorage.setItem('savedNotes', JSON.stringify(savedNotes));
+            displaySavedNotes();
+            editingNoteIndex = -1;
+            document.getElementById('saveOrUpdateButton').textContent = 'Save';
+        }
+
+        function generateTitle(content) {
+            const text = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            const words = text.split(' ');
+            let title = words.slice(0, 2).join(' ');
+            if (content.includes('<img')) {
+                title += ' (img)';
+            }
+            return title || 'Untitled Note';
+        }
+
+        function displaySavedNotes() {
+            const savedNotesList = document.getElementById('savedNotesList');
+            savedNotesList.innerHTML = '';
+            const savedNotesStr = localStorage.getItem('savedNotes');
+            if (savedNotesStr) savedNotes = JSON.parse(savedNotesStr);
+
+            savedNotes.reverse();
+
+            savedNotes.forEach((note, index) => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('note-item');
+                listItem.innerHTML = `
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading${index}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
+                                <div class="note-title">${note.title}</div>
+                            </button>
+                        </h2>
+                        <div id="collapse${index}" class="accordion-collapse collapse" aria-labelledby="heading${index}" data-bs-parent="#noteSaver">
+                            <div class="accordion-body">
+                                <div class="note-content">${note.content}</div>
+                                <div class="note-actions">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editNote(${index})">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteNote(${index})">Delete</button>
+                                    <button class="btn btn-sm btn-outline-success" onclick="exportNoteAsHTML(${index})">Export</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                savedNotesList.appendChild(listItem);
+            });
+
+            const updateButtons = document.querySelectorAll('.note-actions button.btn-outline-primary');
+            updateButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.classList.remove('btn-outline-primary');
+                    button.classList.add('update-button');
+                    button.textContent = "Update";
+                    editingNoteIndex = parseInt(button.closest('.accordion-item').querySelector('.accordion-header').id.replace('heading', ''));
+                    document.getElementById('saveOrUpdateButton').textContent = 'Update';
+                });
+            });
+        }
+
+        function exportNoteAsHTML(index) {
+            const noteContent = savedNotes[index].content;
+            const blob = new Blob([noteContent], {
+                type: 'text/html'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${savedNotes[index].title}.html`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function editNote(index) {
+            const originalNote = structuredClone(savedNotes[index]);
+            const notepad = document.getElementById('notepad');
+            notepad.innerHTML = savedNotes[index].content;
+            notepad.scrollTop = 0;
+            notepad.focus();
+        }
+
+
+        function deleteNote(index) {
+            if (confirm(`Are you sure you want to delete note "${savedNotes[index].title}"?`)) {
+                savedNotes.splice(index, 1);
+                localStorage.setItem('savedNotes', JSON.stringify(savedNotes));
+                displaySavedNotes();
+            }
+        }
+
+        function clearAllNotes() {
+            if (confirm('Are you sure you want to clear all saved notes?')) {
+                localStorage.removeItem('savedNotes');
+                savedNotes = [];
+                displaySavedNotes();
+            }
+        }
+
+        function closeHighlightOptions() {
+            document.getElementById('highlightOptions').style.display = 'none';
+            highlightEnabled = false;
+            document.getElementById('toggleHighlight').textContent = 'Highlight';
+        }
+
+        function openHelp() {
+            window.location.href = "mailto:sabir93cse@gmail.com?subject=Notepad Help";
+        }
+
+        function loadAutoSavedContent() {
+            // Add your auto-save logic here if needed. This is a placeholder.
+        }
+    </script>
+
+</body>
+
+</html>
