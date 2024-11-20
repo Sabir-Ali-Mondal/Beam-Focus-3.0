@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROFILE BEAM FOCUS</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://res.cloudinary.com/dmttn34te/image/upload/v1731426421/vivid-blurred-colorful-background_58702-2655_n62mbe.avif');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+            border: solid 5px blue;
+            border-radius: 10px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .center-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Add a subtle shadow effect */
+        }
+
+        .center-button:hover {
+            background-color: #0056b3;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 250px;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            z-index: 1000;
+            color: #333;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #333;
+            border: solid green 1px;
+            border-radius: 5px;
+            padding: 2px;
+        }
+
+        #nameInput,
+        #bioInput,
+        #saveNameButton {
+            display: block;
+            margin: 10px;
+            width: 95%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Match body font */
+        }
+
+        #bioInput {
+            height: 70px;
+            resize: vertical;
+            /* Allow resizing textarea vertically */
+        }
+
+        #saveNameButton {
+            padding: 5px 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Add a subtle shadow effect */
+        }
+
+        #saveNameButton:hover {
+            background-color: #218838;
+        }
+
+        #profileBio {
+            font-family: "Lucida Console", "Courier New", monospace;
+        }
+
+        .edit-name {
+            margin-top: 1px;
+            font-size: 13px;
+        }
+
+        .edit-name span {
+            cursor: pointer;
+            color: #90011c;
+        }
+
+        .profile-info {
+            text-align: center;
+            margin-top: 15px;
+            color: #c906c6;
+        }
+
+        .profile-info img {
+            width: auto;
+            height: 100px;
+            border-radius: 10px;
+            border: 3px solid white;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            /* Add a subtle shadow effect */
+        }
+
+        .profile-info h2 {
+            margin: 10px 0;
+            font-size: 24px;
+            font-family: 'caveat';
+            /* Slightly larger heading */
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            /* Add a text shadow */
+        }
+
+        .profile-info p {
+            font-size: 16px;
+            color: #ecffeb;
+            margin: 5px 0;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+            /* Add a subtle text shadow */
+        }
+
+        .learning-message {
+            font-size: 13px;
+            color: #f59d00;
+            background-color: #f5007a;
+            font-style: oblique;
+            border: dashed 1px;
+            border-radius: 10px;
+            padding: 5px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+        }
+
+        .logout-button {
+            font-family: "Audiowide";
+            font-size: 10px;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Add a subtle shadow effect */
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        .rounded-square {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="greetContainer">
+        <button id="greetButton" class="center-button">
+            <i class="bi bi-person-circle"></i> Get Started
+        </button>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close" id="closePopup">×</span>
+            <h5 id="greetingTitle">Welcome to Beam Focus !</h5>
+            <input type="text" id="nameInput" placeholder="Enter your name" class="form-control">
+            <textarea id="bioInput" placeholder="Tell us a little about yourself." class="form-control"></textarea>
+            <button id="saveNameButton" class="btn btn-success">Save</button>
+        </div>
+    </div>
+
+    <div class="profile-info" id="profileInfo">
+        <h2 id="profileName"></h2>
+        <p style="color:#0a9403;" id="profileBio"></p>
+        <img id="profileImage" src="https://via.placeholder.com/100" alt="Profile Picture" class="rounded-square">
+        <p class="learning-message">Have a great learning day in Beam Focus !<br> Let's get started.🥰</p>
+        <hr class="m-0 mt-1">
+        <div class="edit-name p-1" id="editName">
+            <span id="editIcon"><i class="bi bi-pencil-square"></i> Edit Name & Bio</span>
+        </div>
+        <button class="logout-button btn btn-danger" id="logoutButton">
+            <i class="bi bi-box-arrow-right"></i> Log Out
+        </button>
+        <hr class="mb-1 m-0">
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const greetButton = document.getElementById('greetButton');
+            const greetContainer = document.getElementById('greetContainer');
+            const popup = document.getElementById('popup');
+            const closePopup = document.getElementById('closePopup');
+            const saveNameButton = document.getElementById('saveNameButton');
+            const nameInput = document.getElementById('nameInput');
+            const bioInput = document.getElementById('bioInput');
+            const editIcon = document.getElementById('editIcon');
+            const profileInfo = document.getElementById('profileInfo');
+            const profileName = document.getElementById('profileName');
+            const profileImage = document.getElementById('profileImage');
+            const profileBio = document.getElementById('profileBio');
+            const logoutButton = document.getElementById('logoutButton');
+
+            const savedName = localStorage.getItem('name');
+            const savedBio = localStorage.getItem('bio');
+            const savedImage = localStorage.getItem('profileImage');
+
+            function openPopup() {
+                popup.style.display = 'block';
+            }
+
+            function closePopupFunc() {
+                popup.style.display = 'none';
+            }
+
+            function saveNameAndBio() {
+                const name = nameInput.value.trim();
+                const bio = bioInput.value.trim() || "Tell us a little about yourself.";
+
+                localStorage.setItem('name', name);
+                localStorage.setItem('bio', bio);
+
+                greetUser(name, bio);
+                sendProfileData();
+            }
+
+            function greetUser(name, bio) {
+                profileName.textContent = `Hello, ${name}`;
+                profileBio.textContent = `< ${bio} . .]`;
+                profileInfo.style.display = 'block';
+                greetContainer.style.display = 'none';
+                closePopupFunc();
+            }
+
+            function logout() {
+                localStorage.removeItem('name');
+                localStorage.removeItem('bio');
+                localStorage.removeItem('profileImage');
+                profileInfo.style.display = 'none';
+                greetContainer.style.display = 'block';
+                openPopup();
+            }
+
+            function sendProfileData() {
+                const name = profileName.textContent;
+                const image = profileImage.src;
+                const bio = profileBio.textContent;
+
+                window.parent.postMessage({
+                    name: name,
+                    image: image,
+                    bio: bio
+                }, '*');
+            }
+
+            if (savedName) {
+                greetUser(savedName, savedBio);
+                sendProfileData();
+            } else {
+                openPopup();
+            }
+
+            // Handle profile image selection
+            profileImage.src = savedImage || 'https://via.placeholder.com/100/FF00FF/FFFFFF?text=Click to Upload';
+
+            profileImage.addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = function(event) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const imageDataURL = reader.result;
+                        localStorage.setItem('profileImage', imageDataURL);
+                        profileImage.src = imageDataURL;
+                        sendProfileData();
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            });
+
+            greetButton.addEventListener('click', openPopup);
+            closePopup.addEventListener('click', closePopupFunc);
+            saveNameButton.addEventListener('click', saveNameAndBio);
+            editIcon.addEventListener('click', openPopup);
+            logoutButton.addEventListener('click', logout);
+        });
+    </script>
+</body>
+
+</html>
