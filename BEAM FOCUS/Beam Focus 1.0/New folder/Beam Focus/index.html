@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beam Focus</title>
+    <style>
+        /* Reset some default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(to bottom, #e6f7ff, #f4f4f9);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            /* Adjust the width of the margin */
+            background-color: #0073e6;
+            /* Adjust the color of the margin */
+            z-index: -1;
+            /* Ensure the margin stays behind the content */
+        }
+
+        body::before {
+            left: 0;
+        }
+
+        body::after {
+            right: 0;
+        }
+
+        /* Header Styling */
+        header {
+            background: linear-gradient(135deg, #0056b3, #0073e6);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 120px;
+            height: auto;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin-right: 10px;
+            /* Adjust spacing */
+            animation: rotateLogo 4s linear infinite;
+            /* Apply rotation animation */
+        }
+
+        @keyframes rotateLogo {
+            from {
+                transform: rotate(0deg);
+                /* Start rotation from 0 degrees */
+            }
+
+            to {
+                transform: rotate(360deg);
+                /* End rotation at 360 degrees */
+            }
+        }
+
+        .logo h1 {
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .feature-icons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .feature-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            /* Adjust spacing between icons */
+            border: 1px solid red;
+            /* Add a thin red border */
+            box-sizing: border-box;
+            /* Include border and padding in the element's total width and height */
+            padding: 1px;
+            /* Add a small padding to ensure the border is visible */
+        }
+
+        .feature-icons img {
+            width: 80px;
+            /* Adjust the width of the icons */
+            height: auto;
+            /* Maintain aspect ratio */
+        }
+
+
+        /* Navigation Styling */
+        nav {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #0056b3;
+            text-decoration: none;
+            font-size: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.3s, transform 0.3s;
+            padding: 15px 20px;
+            /* Adjust the padding */
+        }
+
+        nav ul li a span {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-position: center;
+            background-size: cover;
+            border: 3px solid #3cb371;
+            margin-bottom: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        nav ul li a::before {
+            content: '';
+            /* Add this line */
+            position: absolute;
+            /* Add this line */
+            top: 0;
+            /* Add this line */
+            left: 0;
+            /* Add this line */
+            width: 100%;
+            /* Add this line */
+            height: 100%;
+            /* Add this line */
+            background: rgba(255, 255, 255, 0.8);
+            /* Add this line */
+            z-index: -1;
+            /* Add this line */
+            border-radius: 10px;
+            /* Add this line */
+            transition: background-color 0.3s ease, transform 0.3s;
+            /* Add this line */
+        }
+
+        nav ul li a:hover::before {
+            background-color: #0056b3;
+            /* Add this line */
+        }
+
+        nav ul li a:hover span {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        nav ul li a:hover {
+            color: #e1e1e1;
+            transform: translateY(-5px);
+        }
+
+        /* Updated Images */
+        nav ul li a.home span {
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnEN-o-23v-qF71R1VRIgTPE-yH-6Rgf9dtothnUaOhV_inZkrw2FxwdWCPwkReilCD_PZp0xnwNYL3PZgWiy5uWlcDvVrBjoBXs9m8I0wI_rI6K0Q4Ha6xxKYnXBQslRm3oSNjHZvHMpZlqCRDDAq5htx3yLCDSAjJwL8fUREjNzBV2OBbAM4WqIQp6DJ/s1600/maxresdefault.jpg');
+        }
+
+        nav ul li a.study-paths span {
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbqyPhjMGlsT52ltog3G1Smg8RETHg1egWeXC5hyp8bVOBMYzIIZGPssN-8bhZ6V07noQHt93gvCQvbYsG9tqvrGtIlFH8RkKC6rUbIJO1YajfnLHubUkRRchzd9sHQK0J_viB_bX1OmO5Dh7sC_FEIjoE0zrnU3rQVMLiAsH7paRiOrd1ihZXbOUx9CZr/s1600/career-path-vector-543032.jpg');
+        }
+
+        nav ul li a.community span {
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEispu5uS_h3IUzX5QL7uEI0YEjISKN48-xKcWL-PzPWwZW99IUqGxKnXjzI_1jBeE1kjetfjMmEFWACCfefAxxBF7Z1NdvoZsENZ_e9jSEf9npspr52-A1vn7XNfMyG-7jB7xqIceXUAtWtqdUPjvu9hedlXsKUACnLa623UtQk4fmbsaekAoe4ZkfeC45s/s225/imagxxes.png');
+        }
+
+        nav ul li a.profile span {
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjzHJf91M2-qk8dC5iweLWS1BMWEEbMoNXf76vAuutDr9Opo0gk9KjcbbvGOelQIOHgNmu2qkwlHEpWEsdy4BYmqPNov2TZNzSWTEJzzWLX8XXUh7xs_AAuaFc5DrkcUdVNa6qbnX5wCNSco4n8Yfz-NnV9oKqDqiH-urMCxKoZLiHrw-8YZadIYkgi08KN/s1600/32-327320_learning-icon-learning-png-black-and-white-transparent.png');
+        }
+
+        /* CSS for pop-up messages */
+        .popup {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 999;
+            /* Ensure the pop-up appears in front of other elements */
+        }
+
+        .text {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 999;
+            /* Ensure the text appears in front of other elements */
+        }
+
+        /* Additional CSS for profile pop-up */
+        .profile:hover .popup {
+            display: block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Additional CSS for study paths text */
+        .study-paths:hover .text {
+            display: block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Additional CSS for community text */
+        .community:hover .text {
+            display: block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Main Content Styling */
+        main {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        section {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s;
+        }
+
+        section:hover {
+            background-color: #f0f8ff;
+            transform: translateY(-5px);
+        }
+
+        section h2 {
+            margin-bottom: 15px;
+            color: #0056b3;
+            font-size: 28px;
+            font-weight: bold;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        section p {
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #0056b3, #0073e6);
+            color: #fff;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .body-contaner-whole {
+            padding: 5px;
+            border-style: none double none;
+            border-radius: 5px;
+
+        }
+
+        .slides-container {
+            text-align: center;
+            margin: 0 auto;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        .slides-container iframe {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Additional Elements */
+        .up-arrow-section {
+            text-align: center;
+            padding: 15px;
+            background-color: #f0f0f0;
+            margin-bottom: 20px;
+        }
+
+        .up-arrow-message {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .unavailable-message {
+            background-color: #0D1B2A;
+            /* Deep Blue */
+            border: 2px solid #FFD700;
+            /* Gold/Yellow */
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .unavailable-message p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #FFD700;
+            /* Gold/Yellow */
+        }
+
+
+        .feature-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .feature-icons img {
+            width: 60px;
+            height: 60px;
+            margin: 0 15px;
+            transition: transform 0.3s;
+        }
+
+        .feature-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        .problem-context {
+            background-color: #17202A;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: top;
+            border: 2px solid #c0392b;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .problem-image img {
+            max-width: 120px;
+            max-height: 180px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .problem-description {
+            flex: 1;
+            padding-left: 20px;
+            font-size: 16px;
+        }
+
+        .problem-description p {
+            margin-bottom: 10px;
+        }
+
+
+        .solution-container {
+            padding: 10px;
+            background-color: #27ae60;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .understand-conainer-fetures {
+            border-style: solid;
+            border-top-color: green;
+        }
+
+        .highlighted-box {
+            padding: 15px;
+            background-color: #f39c12;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Boxes */
+        .box {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .box:hover {
+            background-color: #f0f8ff;
+            transform: translateY(-5px);
+        }
+
+        .box h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .box p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .left-section,
+        .right-section {
+            flex: 1;
+            margin-right: 30px;
+        }
+
+        .right-section {
+            flex: 2;
+        }
+
+        @media (max-width: 768px) {
+
+            .left-section,
+            .right-section {
+                margin-right: 0;
+            }
+        }
+
+        /* Button Styles */
+        button {
+            background: linear-gradient(to right, #0073e6, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #0056b3, #003c7e);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="body-contaner-whole">
+    <header>
+        <div class="logo">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiqXoX94Byma-HkW8CjzILD6bv1onaBK5xnN-gkAWlfQboMqaD7yyPu9Gkyujqsh5lJo9BPqTV6Kjz-Z6GuzzaFp3QeKZwYoNnxK-3GwDCM_8V5yNscaJr_AEBe1D2H2AhyKFQdeBZQUqDsnHG1wSprnb-cIK4MS3hRFn1AnDyXxNt4y72MI_fPJf193euF" alt="Beam Focus Logo">
+            <h1>Beam Focus</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index2.html" class="nav-link home">Home<span></span></a></li>
+                <li><a href="#" class="nav-link study-paths">Study_Paths<span></span></a></li>
+                <li><a href="#" class="nav-link profile">Profile<span></span></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="up-arrow-section">
+        <p class="up-arrow-message">️⬆️ Click on the "Home" button for more ⬆️️</p>
+    </div>
+
+    <div class="unavailable-message">
+        <p>Our team is diligently enhancing our website to bring you even better features. Stay tuned as we work to make those features available again soon!</p>
+    </div>
+
+    <div class="slides-container">
+        <!-- Embedding Google Slides presentation -->
+        <iframe src="https://docs.google.com/presentation/d/1KB2HgXWejOyQNXKVtvorYdluNMP15u0IDhxUdp8iblo/embed?start=true&loop=true&delayms=3000" frameborder="0" height="200" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    </div>
+    <div class="problem-context">
+        <div class="problem-image">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEijj1kDp9_pbdyt3Z_RvpLELUmyr0f2kM1ODyR-HP7oX3nNAi7ti4G8rXus5QWMPC1Hbz_0UQP8GF9j-vQthL5ljog5A2sPQSvUNSUB9eDvMBckUxj3wc6HLUVdEKktVFa2i0BhKtbTx0xHHCo9z7vrPJwta_HDCHp63h2SOVhw5GZWDn6nE7RJpeq4gnPW=w265-h208" alt="Online Learning Distracted">
+        </div>
+        <div class="problem-description">
+            <p><strong>Problem:</strong></p>
+            <p>When engaging in online learning, individuals often encounter distractions from platforms like YouTube and Google, hindering their focus and progress.</p>
+            <p><strong>Solution (Our Free Website - Cultivating a Focused Learning Culture):</strong></p>
+            <p>Our platform addresses this issue by fostering a culture of focused online learning. Through structured study plans and resources, we provide a distraction-free environment where learners can thrive.</p>
+        </div>
+    </div>
+    <main>
+        <div class="core-features">
+            <h2>Core Features:</h2>
+            <ol>
+                <li><strong>Curated Study Paths.</strong></li>
+                <li><strong>Streak Feature.</strong></li>
+                <li><strong>Community Engagement.</strong></li>
+                <li><strong>Recognition and Certification.</strong></li>
+                <li><strong>Exam Proctoring Feature.</strong></li>
+                <li><strong>Notepad Option.</strong></li>
+                <li><strong>Doubt Clarification by Expert.</strong></li>
+                <li><strong>Day-Night Mode.</strong></li>
+                <li><strong>Timer Feature.</strong></li>
+            </ol>
+        </div>
+
+        <div class="additional-feature">
+            <h2>Additional Feature:</h2>
+            <ol>
+                <li><strong>Integrated Access to Important Platforms.</strong></li>
+            </ol>
+        </div>
+        <div>
+            <p><br></p>
+        </div>
+        <div class="understand-conainer">
+            <p1 class="understand-conainer-fetures">These features collectively make Beam Focus a comprehensive and user-friendly online learning platform, catering to the diverse needs of learners while providing a supportive and engaging environment for effective study.</p1>
+            <div>
+                <p><br></p>
+            </div>
+            <div>
+                <p class="access">⬇️Understant these more easily ⬇️</p>
+            </div>
+            <!-- Main content area -->
+            <section class="curated-paths box">
+                <h2>Curated Study Paths: Tailored Learning Tracks</h2>
+                <p><strong>What is it?</strong><br>Personalized learning journeys made by experts to guide users in reaching their educational goals.</p>
+                <p><strong>What are the benefits?</strong><br>It makes learning easier by giving you exactly what you need, helps you focus on what matters, and helps you get better at the things you want to learn.</p>
+            </section>
+
+            <section class="study-protection box">
+                <h2>Study Protection and Resource Access: Secure Learning Environment</h2>
+                <p><strong>What is it?</strong><br>Our website provides a protective shield against distractions, ensuring that your study time remains focused and productive. Moreover, it offers access to various trusted websites for study materials such as AI, Claude, Gemini, ChatGPT, Bing, as well as filtered content from YouTube and Google Search, specifically tailored to your study needs.</p>
+                <p><strong>What are the benefits?</strong><br>It guards you against distractions, allowing you to concentrate fully on your studies. Additionally, it offers easy access to reliable resources, saving you time and effort in finding relevant study materials, and ensures that the content you encounter is directly related to your learning objectives.</p>
+            </section>
+
+            <section class="streak-feature box">
+                <h2>Streak Feature: Learning Momentum Tracker</h2>
+                <p><strong>What is it?</strong><br>It's like keeping score of how many days in a row you've been learning. It keeps you motivated to keep going every day.</p>
+                <p><strong>What are the benefits?</strong><br>It helps you stay on track by making sure you learn something every day, helps you build good habits, and makes learning feel like a game you want to win.</p>
+            </section>
+
+            <section class="community-engagement box">
+                <h2>Community Engagement: Interactive Learning Hub</h2>
+                <p><strong>What is it?</strong><br>It's a place where you can talk to other people who are learning the same things as you. You can share ideas, work on projects together, and get help from each other.</p>
+                <p><strong>What are the benefits?</strong><br>It makes learning more fun because you're not alone, you can make friends who can help you, and you can learn from other people's experiences.</p>
+            </section>
+
+            <section class="recognition-certification box">
+                <h2>Recognition and Certification: Achievement Badges and Certificates</h2>
+                <p><strong>What is it?</strong><br>It's like getting a medal or a certificate when you finish something. It shows that you did a good job and that you know what you're talking about.</p>
+                <p><strong>What are the benefits?</strong><br>It makes you feel proud of yourself, it shows other people that you're good at what you do, and it gives you something to aim for.</p>
+            </section>
+
+            <section class="notepad-option box">
+                <h2>Notepad Option: Personalized Learning Journal</h2>
+                <p><strong>What is it?</strong><br>It's like a notebook where you can write down what you're learning, your thoughts, and keep track of your progress.</p>
+                <p><strong>What are the benefits?</strong><br>It helps you remember what you've learned, it lets you see how far you've come, and it helps you organize your thoughts.</p>
+            </section>
+
+            <section class="doubt-clarification box">
+                <h2>Doubt Clarification by Expert: Expert Q&A Support</h2>
+                <p><strong>What is it?</strong><br>It's like having a teacher you can ask questions to whenever you don't understand something.</p>
+                <p><strong>What are the benefits?</strong><br>It helps you understand things better, it makes learning easier because you can get help when you need it, and it gives you answers that are tailored to your questions.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Beam Focus. All rights reserved.</p>
+    </footer>
+<script>
+    <!-- JavaScript scripts go here -->
+
+            // Show pop-up when hovering over the profile link
+            const profileLink = document.querySelector('.profile');
+            if (profileLink) {
+                const profilePopup = createPopup('Profile settings (Under construction)', 'Exit', profileLink);
+                let popupVisible = false;
+
+                profileLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (!popupVisible) {
+                        document.body.appendChild(profilePopup);
+                        popupVisible = true;
+                    } else {
+                        profilePopup.remove();
+                        popupVisible = false;
+                    }
+                });
+            }
+
+            // Show text when hovering over the study paths link
+            const studyPathsLink = document.querySelector('.study-paths');
+            if (studyPathsLink) {
+                const studyPathsPopup = createPopup('Developing till now', '', studyPathsLink);
+                studyPathsLink.addEventListener('mouseover', function() {
+                    document.body.appendChild(studyPathsPopup);
+                });
+                studyPathsLink.addEventListener('mouseout', function() {
+                    studyPathsPopup.remove();
+                });
+            }
+
+            function createPopup(mainText, secondaryText, referenceElement) {
+                const popup = document.createElement('div');
+                popup.innerHTML = `<div>${mainText}</div><div style="cursor:pointer; text-decoration: underline; color: blue;">${secondaryText}</div>`;
+                popup.classList.add('popup');
+                popup.style.backgroundColor = '#fff';
+                popup.style.color = '#000';
+                popup.style.border = '1px solid #ccc';
+                popup.style.padding = '5px 10px';
+                popup.style.position = 'absolute';
+                popup.style.top = referenceElement.offsetTop + referenceElement.offsetHeight + 'px';
+                popup.style.left = referenceElement.offsetLeft + 'px';
+
+                // Event listener for exit action
+                const exitLink = popup.querySelector('div:nth-child(2)');
+                if (exitLink) {
+                    exitLink.addEventListener('click', function() {
+                        window.location.href = 'about:blank'; // This will simulate exiting the site
+                    });
+                }
+
+                return popup;
+            }
+        });
+        document.getElementById('toPage2').addEventListener('click', function() {
+            window.location.href = 'index2.html';
+        });
+        const homeLink = document.querySelector('.home');
+        if (homeLink) {
+            homeLink.href = 'index2.html';
+        }
+    </script>
+</body>
+
+</html>
+

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: #28a745;
+            /* Green color for a premium look */
+            padding: 0;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .navbar-brand h2 {
+            margin: 0;
+        }
+
+        .navbar-image {
+            width: 200px;
+            height: 60px;
+            margin-right: 10px;
+            border-radius: 10px;
+            padding: 0px;
+        }
+
+        .navbar-nav {
+            padding: 2px 30px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+            text-decoration: underline;
+        }
+
+        .navbar-nav .nav-item .dropdown-menu {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .dropdown-menu .dropdown-item {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #198754;
+            /* Darker green for hover effect */
+        }
+
+        .btn-primary {
+            background-color: #198754;
+            /* Darker green for the button */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            /* Darker green for hover effect */
+        }
+
+        .iframe-container {
+            width: 103%;
+            height: 100vh;
+            border: none;
+            overflow: hidden;
+        }
+
+        /* Profile Details Section */
+        .profile-details {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            z-index: 100;
+            /* Ensure it stays above other elements */
+        }
+
+        .profile-details h2 {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: Red;
+        }
+
+        .profile-details p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: blue;
+        }
+
+        .profile-details .close-btn {
+            font-size: 25px;
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            cursor: pointer;
+            background-color: yellow;
+            padding: 10px;
+            border-radius: 50%;
+            /* Makes the button round */
+            border: none;
+            /* Removes the border */
+            width: 45px;
+            /* Sets the width */
+            height: 45px;
+            /* Sets the height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Adds a subtle shadow for a premium look */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .profile-details .close-btn:hover {
+            background-color: #ffc107;
+            /* Slightly darker yellow on hover */
+            color: #198754;
+        }
+
+        /* Profile Settings Section */
+        .profile-settings-section {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            z-index: 100;
+            /* Ensure it stays above other elements */
+        }
+
+        .profile-settings-section .close-btn {
+            font-size: 25px;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            background-color: yellow;
+            padding: 10px;
+            border-radius: 50%;
+            /* Makes the button round */
+            border: none;
+            /* Removes the border */
+            width: 45px;
+            /* Sets the width */
+            height: 45px;
+            /* Sets the height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Adds a subtle shadow for a premium look */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .profile-settings-section .close-btn:hover {
+            background-color: #ffc107;
+            /* Slightly darker yellow on hover */
+            color: #198754;
+        }
+
+        .profile-settings-section iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Styling for the buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        #hide-btn,
+        #more-details-btn {
+            font-family: 'Helvetica Neue', sans-serif;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: blue;
+            color: #fff;
+            font-size: 10px;
+        }
+
+        #hide-btn,
+        #more-details-btn:hover {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-2">
+        <a class="navbar-brand" href="#">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEin-CaZsicnkkAdfSj6_cYYb6a-DE4pPMOeaHCROQP2h0W_ZpWAnVfHsaKd7EkXDETISqtuMBLK1W3-F1I8mEseiNLeOzwbNcPMfNaeMLCEUvuZO9I4rBGJpCdBhZZ_xeED9LGvJW72ywsTK7xVHlqkNEiMdlp73H7M7GcZhH3aU_RHHKiLkgcIu-sN-3TL/s320/Screenshot%202024-08-09%20012523.png" class="navbar-image">
+        </a>
+        <div style="font-family:'roboto';color:white;border:solid 1px white;padding:5px;">
+            <p style="font-size: 10px;">
+                You've spent <span id="elapsedMessage" style="font-weight: bold;"></span> learning on Beam Focus. 🎉 Keep up the great work! 🚀
+            </p>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <hr style="border: none; height: 2px; background: linear-gradient(to right, navy, lightblue); border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);margin-bottom:15px;">
+            <div class="navbar-nav ml-auto">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link profile dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div id="profileDetails" class="profile-details">
+                            <span class="close-btn" onclick="hide('profileDetails')">×</span>
+                            <h2 id="profileNameDisplay">Name will appear here</h2>
+                            <p id="profileBioDisplay">Bio will appear here</p>
+                        </div>
+                        <div class="button-container dropdown-menu dropdown-menu-right d-flex flex-column" aria-labelledby="navbarDropdown">
+                            <div class="m-2"><button class="dropdown-item btn" id="more-details-btn" onclick="display('profileSettingsSection')">Account Settings</button></div>
+                            <div> <a class="dropdown-item" id="exitBtn" href="https://www.google.com">Exit</a></div>
+                        </div>
+                    </div>
+                    <div id="profileSettingsSection" class="profile-settings-section">
+                        <span class="close-btn" onclick="hide('profileSettingsSection')">×</span>
+                        <iframe src="https://profilebmfcs.ccbp.tech/" style="width: 100%; height: 400px; border-radius: 10px;"></iframe>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" class="nav-link home" onclick="loadContent('https://beamfocus4.ccbp.tech/')">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="javascript:void(0);" class="nav-link" onclick="loadContent('https://newyoutube.ccbp.tech/')">
+                    <i class="bi bi-triangle-half" style="color:red;"></i>
+                </a>
+                <a href="javascript:void(0);" class="nav-link" onclick="loadContent('https://videopath.ccbp.tech/')">
+                    <i>📺 </i>
+                </a>
+                <a href="javascript:void(0);" class="nav-link" onclick="loadContent('https://studypaths.ccbp.tech')">
+                    <i class="fas fa-book"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="iframe-container" id="iframe-container">
+        <iframe src="https://beamfocus4.ccbp.tech/" id="contentFrame" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Function to load content into iframe
+        function loadContent(url) {
+            document.getElementById('contentFrame').src = url;
+        }
+
+        // Function to handle profile section toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            let sections = document.querySelectorAll('[id^="section"]');
+            if (sections.length > 1) {
+                let sectionOne = sections[0];
+                sections.forEach((section) => {
+                    if (section !== sectionOne) {
+                        section.style.display = 'none';
+                    }
+                });
+            }
+
+            window.display = (sectionId) => {
+                makeRemainingScreensInvisible(sectionId);
+                let section = document.getElementById(sectionId);
+                if (section) { // Check if the element is found
+                    section.style.display = 'block';
+                    window.scrollTo(0, 0);
+                }
+            };
+
+            window.hide = (sectionId) => {
+                let section = document.getElementById(sectionId);
+                if (section) { // Check if the element is found
+                    section.style.display = 'none';
+                }
+            };
+
+            const makeRemainingScreensInvisible = (sectionId) => {
+                let sections = document.querySelectorAll('[id^="section"]');
+                sections.forEach((section) => {
+                    if (section.id !== sectionId) {
+                        section.style.display = 'none';
+                    }
+                });
+            };
+        });
+
+        // Function to handle messages from the iframe
+        window.addEventListener('message', function(event) {
+            if (event.origin !== 'https://profilebmfcs.ccbp.tech') return;
+
+            const data = event.data;
+            const name = data.name;
+            const bio = data.bio;
+
+            // Update the UI with received data
+            document.getElementById('profileNameDisplay').textContent = name;
+            document.getElementById('profileBioDisplay').textContent = bio;
+            // Display the profile section
+            document.getElementById('profileDetails').style.display = 'block';
+        });
+    </script>
+    <script>
+        let startTime = new Date().getTime();
+
+        function updateTimer() {
+            let currentTime = new Date().getTime();
+            let elapsedTime = currentTime - startTime;
+
+            let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+            let minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+            // Update elapsed time message
+            let elapsedTimeMessage = `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''} ${seconds} second${seconds !== 1 ? 's' : ''}`;
+            document.getElementById('elapsedMessage').textContent = elapsedTimeMessage;
+        }
+
+        setInterval(updateTimer, 1000);
+
+        // Function to open Streak Popup
+        function openStreakPopup() {
+            document.getElementById('streakPopup').style.display = 'flex';
+            const streakIframe = document.getElementById('streakIframe');
+            streakIframe.src = 'https://streakbeamfocus.ccbp.tech'; // Reloads the Streak site
+        }
+
+        // Function to close Streak Popup
+        function closeStreakPopup() {
+            document.getElementById('streakPopup').style.display = 'none';
+        }
+
+        // Function to open Notepad Popup
+        function openNotepadPopup() {
+            document.getElementById('notepadPopup').style.display = 'flex';
+            const notepadIframe = document.getElementById('notepadIframe');
+            notepadIframe.src = 'https://notepadbutton.ccbp.tech/'; // Reloads the Notepad site
+        }
+
+        // Function to close Notepad Popup
+        function closeNotepadPopup() {
+            document.getElementById('notepadPopup').style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>

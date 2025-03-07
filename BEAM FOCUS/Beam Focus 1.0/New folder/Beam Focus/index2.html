@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        /* CSS Styles */
+        /* Default light theme */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        .timer-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            z-index: 1000;
+            /* Ensure it stays on top of other elements */
+        }
+
+        .timer-display {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .timer-display span {
+            color: #007bff;
+        }
+
+        .timer-message {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 2px;
+            padding: 25px;
+            border-radius: 20px;
+            /* Update container border radius for a more attractive look */
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .core-features {
+            background-color: #fff;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .features-list li {
+            width: calc(33.33% - 20px);
+            /* Three items in a row with margin */
+            margin-bottom: 20px;
+        }
+
+        .features-list li a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .features-list li a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .features-list li a img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .features-list li {
+                width: calc(50% - 20px);
+                /* Two items in a row with margin */
+            }
+        }
+
+        .additional-features {
+            background-color: #ffcc00;
+            /* Premium yellow background */
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Dark theme */
+        .dark-theme {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .dark-theme .core-features {
+            background-color: #444;
+        }
+
+        .dark-theme .additional-features {
+            background-color: #666;
+        }
+
+        .dark-theme footer {
+            background-color: #111;
+        }
+
+        /* Buttons */
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 20px;
+            /* Rounded corners for the button */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Links */
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toggle Button Styles */
+        #themeButton {
+            border-radius: 10px;
+            /* Slightly rounded corners */
+            width: 60px;
+            /* Adjust button width */
+            height: 60px;
+            /* Adjust button height */
+            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikWUgYdkKs-R8VVV94dLaJ4JfDftqGZyJeKSD8MseJpdEjMAaUb8VFRYT22vkdVo91uJZ7AxmgtpiPshqOE9iMHzoBO3XFUfkz5qczeVLRJt_jDpW6t98SAKZkIJ-7UzfgPPYvzinFKLCm4W3v-INAurNKVtJcxSnJpS_Frl312z22xwX0LiJHnFa6iNNA/s1600/images.png');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #ffd700;
+            /* Premium colored outline (gold) */
+            outline: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            /* Smooth transition effect */
+            position: fixed;
+            /* Position fixed on the screen */
+            top: 170px;
+            /* Distance from the top */
+            right: 0px;
+            /* Distance from the left */
+            z-index: 1000;
+            /* Ensure it stays on top of other elements */
+        }
+
+        #themeButton:hover {
+            transform: scale(1.1);
+            /* Slightly increase size on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h3>Welcome to Our Learning Platform</h3>
+            <h1>Beam Focus</h1>
+            <button id="themeButton"></button> <!-- Make the button empty for the logo -->
+        </div>
+    </header>
+    <section class="additional-features">
+        <div class="container">
+            <h2>Additional Features:</h2>
+            <a href="index3.html" id="additionalFeaturesButton" class="button-link">Explore Best Free Websites and AI Features for Your study</a>
+        </div>
+    </section>
+    
+    <div class="timer-container">
+        <div class="timer-message" id="timer-message">You spent <span id="hours">00</span> hour<span id="plural-hours">s</span>, <span id="minutes">00</span> minute<span id="plural-minutes">s</span>, and <span id="seconds">00</span> second<span id="plural-seconds">s</span>. <br>Keep it up, great work!</div>
+    </div>
+
+    <div>
+        <section class="core-features">
+            <div class="container">
+                <h2>Core Features:</h2>
+                <ul class="features-list">
+                    <li>
+                        <a href="curated-study-paths.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_LISNuDtUzxpzTrmgtzSUfqxFofMhlk4JzNDFOj5ltjQfdSxCaacYWq3aRar5XoLIB3ltB9ElXgOBvEzhDapVLvn9VdS4w1TyMNyuO20xAAo4BckA29TcVs-gjLOdXheN-0wD1ElHg1hhH1zsKAYJXPSsQTWMjmO9JnF1AJ8LqTRPJlGDeMamOOWwCM6_/s320/30-decision-512.webp" alt="Curated Study Paths Icon">
+                            Curated Study Paths
+                        </a>
+                    </li>
+                    <li>
+                        <a href="streak-feature.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzvPheydnYIMX2k0Kiuvcxtuiu1VaBYOD0f0bQdW5TfLZSJIXnqZtyFS103Mr5u3Q_FBIMQbepQI3T6bp3U8p2AF_7jGkUcjbULZ-tG-FOPDsViPNyl4PwihoQBayvlU-zmwE3Y0XqN7HmiofCgK22jeTBd9VRDBkWwWGGhMBiBLQHKA81M-cSgJGOkzhh/s1600/images.jpg" alt="Streak Feature Icon">
+                            Streak Feature
+                        </a>
+                    </li>
+                    <li>
+                        <a href="community-engagement.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg3pKXfZlGSWgUdL_eNeqiVl9Pr913gn8INSfWYVHQo9D4FGtoAp5ocAXV4q3YDd8EtD-ToJFlRqKrpFFKKzSZuqvx3Nle5F9w33izORUEIq41y_t0ZfK1uGYaWlxCpvi7uioznTXcN1tEwunJ130azqQWV-1Ce6aPs-CC_phwhhZTYmFZ9bWqvyir9QCJc/s1600/download.png" alt="Community Engagement Icon">
+                            Community Engagement
+                        </a>
+                    </li>
+                    <li>
+                        <a href="recognition-certification.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjMAGqTjX5zVJP0hiSYcmCkELE6P91oFyPSmcaJPsO3L0V8VyCv-drfz9o_vVf0bYQJfZEkOlbh11XzcNG04yElxz4_rtAAIpgiS0DoGvEzXIUGnLNu2JqSKCw7yprQlIhyVne82oA3hnUS7GR4RoAAoeaU5uVh8vPKaHwuJVyK_oQNgdYhY9U8gt83e6Cp/s1600/images.png" alt="Recognition and Certification Icon">
+                            Recognition and Certification
+                        </a>
+                    </li>
+                    <li>
+                        <a href="exam-proctoring-feature.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcdFK6WgTm_Vjt_h25uo7KQdKknnngTnwrs7RPB3OkPD0JRUF0vnRhWLLaMtyD6cY6e4Q0BUdN5rUyivqHR_pQZfCpA4BS4OUBBXTMEcSGRjRDiYWR4vkTCmalQxZBpu9OphqPJBbwNsy34EY8tN6M92edMOKCMBypqKZuSomANeHGfu1SOwwOX5k2oje4/s1600/download%20(1).png" alt="Exam Proctoring Feature Icon">
+                            Exam Proctoring Feature
+                        </a>
+                    </li>
+                    <li>
+                        <a href="notepad-option.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKgYPUk-lswoqYVd3HXnKgF-Ntf7e2b7glOaEA_LX77gcXURpw9F3xkXfChc0y5F6Gs_a64tu7C-7o2nX750kCeZqtObw6lIzrBqDG8T8leeLY0Q5SsLDcNU-XgSd3E-97M2Upp2vNMPC9SJiRxWuxSDchTd6AuILKecM8jb_rXQVczjGYMoZECcRO9USv/s320/png-transparent-computer-icons-notepad-notepad-icon-angle-text-rectangle-thumbnail.png" alt="Notepad Option Icon">
+                            Notepad Option
+                        </a>
+                    </li>
+                    <li>
+                        <a href="doubt-clarification.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiC41O_7suu7v1EJNXOuNTKrtiL-el65KEFCG3l8j_xLlWpoACQRFlO8d_vdeFBw16lE6DSXwa0m5t-lpjeO-ZncT1Qi8Ij8jD53nter9fthFCbjdiMPgm1N4NJ4TPcFohRYle0G66N4-tR7nJ4KvHk1XWyfFSoIZ2cRnJLMdDTRH4XqiHOI_DqYPZ_8zSf/s320/8041555.webp" alt="Doubt Clarification Icon">
+                            Doubt Clarification by Expert
+                        </a>
+                    </li>
+                    <li>
+                        <a href="day-night-mode.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikWUgYdkKs-R8VVV94dLaJ4JfDftqGZyJeKSD8MseJpdEjMAaUb8VFRYT22vkdVo91uJZ7AxmgtpiPshqOE9iMHzoBO3XFUfkz5qczeVLRJt_jDpW6t98SAKZkIJ-7UzfgPPYvzinFKLCm4W3v-INAurNKVtJcxSnJpS_Frl312z22xwX0LiJHnFa6iNNA/s1600/images.png" alt="Day-Night Mode Icon">
+                            Day-Night Mode
+                        </a>
+                    </li>
+                    <li>
+                        <a href="timer-feature.html">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf7ebBPpmuxtq49hZSQTMS5w7lycFzNO_55nap4cuhXg0EEVuT2r8ZB0cCPjgtJz0v_czxEinj1ZDvGOk4pz9n7E-1k_n3KXD7jcJgib3-Y5AhkdWGFkxcdSpngBAWBGnYsZAV2Xvf3RfsfrKMroC-udvlW0S6vLFm0CgmPOw-mifyVilV3peXocJuzsBJ/s1600/download.jpg" alt="Timer Feature Icon">
+                            Timer Feature
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Learning Platform</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript
+        // Function to toggle between light and dark themes
+        function toggleTheme() {
+            const body = document.querySelector('body');
+            body.classList.toggle('dark-theme');
+        }
+
+        // Event listener for the theme toggle button
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeButton = document.querySelector('#themeButton');
+            if (themeButton) {
+                themeButton.addEventListener('click', toggleTheme);
+            } else {
+                console.error('Theme button not found.');
+            }
+
+            // Redirect to additional features page when the button is clicked
+            const additionalFeaturesButton = document.querySelector('#additionalFeaturesButton');
+            if (additionalFeaturesButton) {
+                additionalFeaturesButton.addEventListener('click', function() {
+                    window.location.href = 'https://beamfocussites.ccbp.tech/';
+                });
+            } else {
+                console.error('Additional Features button not found.');
+            }
+        });
+
+        let startTime = new Date().getTime();
+
+        function updateTimer() {
+            let currentTime = new Date().getTime();
+            let elapsedTime = currentTime - startTime;
+
+            let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+            let minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('plural-hours').textContent = hours === 1 ? '' : 's';
+
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('plural-minutes').textContent = minutes === 1 ? '' : 's';
+
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('plural-seconds').textContent = seconds === 1 ? '' : 's';
+        }
+
+        setInterval(updateTimer, 1000);
+    </script>
+
+
+
+</body>
+
+</html>
