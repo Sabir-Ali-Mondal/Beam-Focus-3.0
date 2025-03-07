@@ -1,8 +1,7 @@
 # Beam-Focus-3.0
 A learning Portal , 3.0 version of Beam Focus....
 
-Watch Video:
-<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7264814903419367424?collapsed=1" height="399" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe>
+Watch Video: https://www.linkedin.com/posts/sabir-ali-mondal_automated-userfriendly-beautiful-activity-7264816247639289856-8Hbw?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEb7HTcBmgJ7XyGQkeVsGOFvmnoEnmntGh8
 
 **Total 2,091+840+451+338+598 = **4,318** lines of code**
 
