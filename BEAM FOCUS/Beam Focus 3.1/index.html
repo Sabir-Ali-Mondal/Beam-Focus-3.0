@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beam Focus 3.0 - Enhanced</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Include SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div>
+        <div class="modal-background"></div>
+        <div class="container mt-5 fade-in">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="text-center mb-4">
+                        <h1 class="site-heading">
+                            <a style="font-family: cursive;text-decoration:none;" href="https://beamfocus.ccbp.tech/" target="_blank">
+                                Beam Focus 3.0
+                            </a>
+                        </h1>
+                        <p class="text-secondary">Developed by <strong>S. A. M.</strong></p>
+                        <div class="d-flex flex-row mb-2">
+                            <a class="theme-button" style="margin-right:20px;" id="themeButton">
+                                <i class="bi bi-brightness-high-fill"></i>
+                            </a>
+                            <a id="timer-button" class="theme-button d-flex flex-row justify-space-between" style="background-color:transparent;margin-right:auto;width:80px;">
+                                <span>
+                                    <i class="bi bi-stopwatch" style="color:red;font-size: 1.5rem;"></i>
+                                </span>
+                                <span>
+                                    <div class="timer-display" style="font-size:20px;padding:0px 2px;color:#adaffc;border-radius:2px;"></div>
+                                </span>
+                            </a>
+                            <div class="theme-button ml-auto" style="background-color:transparent;">
+                                <div class="nav-item dropdown" onmouseover="this.querySelector('.dropdown-menu').style.display='block';" onmouseout="this.querySelector('.dropdown-menu').style.display='none';">
+                                    <a style="font-size:23px;" href="#" class="nav-link profile" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-user-circle text-primary"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <button class="dropdown-item text-secondary" data-toggle="modal" data-target="#AccountModal">Account Settings</button>
+                                        <a class="dropdown-item text-danger" id="exitBtn" href="https://www.google.com">Exit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="bg-info" data-bs-toggle="modal" data-bs-target="#streakModal"><i class="bi bi-fire text-warning"></i> Streak </button>
+                        <button class="bg-info" data-bs-toggle="modal" data-bs-target="#notepadModal"><i class="bi bi-journal-text"></i> Notepad </button>
+                        <button class="bg-info text-white" data-bs-toggle="modal" data-bs-target="#doubtModal"><i class="text-white bi bi-question-circle"></i> Ask Doubt</button>
+                    </div>
+                    <div id="dashboard" class="card new-card mb-4 slide-up">
+                        <div class="card-header">
+                            Dashboard
+                        </div>
+                        <div class="card-body">
+                            <h2 id="greeting"></h2>
+                            <h3>Recent Study Paths:</h3>
+                            <ul id="recentPaths"></ul>
+                            <h3>Recent Watchlist:</h3>
+                            <ul id="recentWatchlist"></ul>
+                        </div>
+                    </div>
+                    <div id="Section-Study_path" class="">
+                        <div class="card mb-4 slide-up">
+                            <div class="card-header">
+                                Create & Save Study Path <button type="button" class="mobile-notice-button text-success px-2 py-1" style="height: 25px; font-size: 12px; text-align: center; border-radius: 5px; background-color: #f8f9fa; border: 1px solid #dc3545;" data-bs-toggle="modal" data-bs-target="#videoModal">
+                                    Tutorial
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="topicInput" class="form-label">Enter Topic</label>
+                                    <input type="text" id="topicInput" class="form-control" placeholder="e.g., Website Development">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="languageSelect" class="form-label">Select Language</label>
+                                            <select id="languageSelect" class="form-select">
+                                                <option value="English">English</option>
+                                                <option value="Hindi">Hindi</option>
+                                                <option value="Bengali">Bengali</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="customLanguageDiv" class="mb-3" style="display: none;">
+                                            <label for="customLanguageInput" class="form-label">Enter Custom Language</label>
+                                            <input type="text" id="customLanguageInput" class="form-control" placeholder="e.g., Spanish">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="difficultySelect" class="form-label">Select Difficulty Level</label>
+                                    <select id="difficultySelect" class="form-select">
+                                        <option value="Beginner Friendly">Simplest</option>
+                                        <option value="Normal">Normal</option>
+                                        <option value="Deep">Deeper</option>
+                                    </select>
+                                </div>
+                                <div class="mr-3">
+                                    <div>
+                                        <label>Search Engine:</label>
+                                        <input type="radio" id="chatGPTOption" name="searchEngine" value="chatGPT" checked>
+                                        <label for="chatGPTOption">ChatGPT</label>
+                                        <input type="radio" id="perplexityOption" name="searchEngine" value="perplexity">
+                                        <label for="perplexityOption">Perplexity</label>
+                                    </div>
+                                    <button class="btn btn-primary" id="generatePromptBtn">Generate Study Path</button>
+                                    <button class="mobile-notice-button text-danger" style="margin-top: 10px;" data-bs-toggle="modal" data-bs-target="#mobileNoticeModal">Watch Notice: for Mobile User</button>
+                                </div>
+                                <hr>
+                                <div class="mb-3">
+                                    <label for="studyPathInput" class="form-label">Manually Paste Study Path (with YouTube Links)</label>
+                                    <button type="button" class="mobile-notice-button text-danger px-2 py-1" style="height: 30px; font-size: 12px; text-align: center; border-radius: 5px; background-color: #f8f9fa; border: 1px solid #dc3545;margin-bottom:10px;" data-bs-toggle="modal" data-bs-target="#videoModal">
+                                        Tutorial: how to copy?
+                                    </button>
+                                    <div class="input-group">
+                                        <button id="pasteButton" class="btn btn-primary" type="button">Paste</button>
+                                        <textarea id="studyPathInput" class="form-control textarea-custom" placeholder="Paste your study path here"></textarea>
+                                    </div>
+                                </div>
+                                <button class="btn btn-success" id="saveStudyPathBtn">Save Study Path</button>
+                            </div>
+                        </div>
+                        <div id="savedPathsDiv" class="card new-card slide-up">
+                            <div class="card-header">
+                                Saved Study Paths
+                            </div>
+                            <div class="mb-3">
+                                <form class="mb-3">
+                                    <div class="input-group">
+                                        <input type="text" id="searchPath" class="form-control form-control-lg m-2" placeholder="Search Study Path" aria-label="Search Study Path" onfocus="this.value = '';">
+                                    </div>
+                                    <button id="deleteAllButton" class="btn btn-danger btn-lg ms-2 m-2">
+                                        <i class="bi bi-trash"></i> Delete All
+                                    </button>
+                                </form>
+                            </div>
+                            <ul id="savedPaths" class="list-group list-group-flush"></ul>
+                            <div id="playlist" class="card-body">
+                                <div class="card-header">
+                                    Playlist
+                                </div>
+                                <div class="status-guide d-flex flex-row justify-content-top">
+                                    <div class="guide-item">
+                                        <div class="guide-color done"></div>
+                                        <span></span>
+                                    </div>
+                                    <div class="guide-item">
+                                        <div class="guide-color not-done"></div>
+                                        <span></span>
+                                    </div>
+                                </div>
+                                <div class="row playlist-row">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="Section-Watchlist" class="card new-card mb-4 slide-up">
+                        <div class="card-header">
+                            Watchlist
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="videoLinkInput" class="form-label">Paste Video Link (YouTube or other):</label>
+                                <input type="text" id="videoLinkInput" class="form-control" placeholder="Paste video link here">
+                            </div>
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-success" id="addToWatchlistBtn">Add to Watchlist</button>
+                                <button class="btn btn-primary" id="playVideoBtn" style="margin-left: 10px;">Play Video</button>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="searchWatchlist" class="form-control" placeholder="Search Watchlist">
+                            </div>
+
+                            <ul id="watchlistItems" class="list-group list-group-flush mt-3"></ul>
+                        </div>
+                    </div>
+                    <div id="Section-Code_playground" class="card new-card mb-4 mt-4 slide-up">
+                        <div class="card-header">
+                            Code Playground
+                        </div>
+                        <div class="card-body row">
+                            <div class="col-8">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="languageSelect2">
+                                            Choose Your Language:
+                                            <br><span class="text-secondary" style="font-size:10px;">(You will be automatically redirected)</span>
+                                        </label>
+                                        <select class="form-control" id="languageSelect2" onchange="openLink(this)">
+                                            <option value="#" selected>Select a language</option>
+                                            <option value="https://www.programiz.com/c-programming/online-compiler/">C</option>
+                                            <option value="https://www.programiz.com/python-programming/online-compiler/">Python</option>
+                                            <option value="https://www.programiz.com/cpp-programming/online-compiler/">C++</option>
+                                            <option value="https://www.programiz.com/java-programming/online-compiler/">Java</option>
+                                            <option value="https://www.programiz.com/javascript/online-compiler/">JavaScript</option>
+                                            <option value="https://www.programiz.com/sql/online-compiler/">SQL</option>
+                                            <option value="https://www.programiz.com/golang/online-compiler/">Go</option>
+                                            <option value="https://www.programiz.com/html/online-compiler/">HTML</option>
+                                            <option value="https://www.programiz.com/rust/online-compiler/">Rust</option>
+                                            <option value="https://www.programiz.com/php/online-compiler/">PHP</option>
+                                            <option value="https://www.programiz.com/swift/online-compiler/">Swift</option>
+                                            <option value="https://www.programiz.com/r/online-compiler/">R</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-4 d-flex flex-column justify-content-center">
+                                Using <span class="text-secondary">www.programiz.com</span>
+                                <br>You Can Also Use <a href="https://onecompiler.com/" target="_blank" class="text-secondary">onecompiler.com</a>
+                            </div>
+                            <p onclick="window.open('https://videocodez.ccbp.tech', '_blank')" class="shadow" style="cursor: pointer; font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; background-color: #333; padding: 10px 0px; border-radius: 12px; margin-right: 10px; color: #73ed51; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); text-align: center; border:1px solid green;">
+                                Click here to get <span style="color: #f25805; font-weight: bold;">'Video & Code Playground'</span><br>
+                                <span style="color: #ffa1ee; font-weight: bold;">
+                                    <i class="fas fa-code mr-1"></i>
+                                    <i class="fab fa-python mr-1"></i>
+                                    <i class="fab fa-cpp mr-1"></i>
+                                    <i class="fab fa-java mr-1"></i>
+                                    <i class="fab fa-c-sharp mr-1"></i>
+                                    <i class="fab fa-js-square mr-1"></i>
+                                    <i class="fas fa-database mr-1"></i>
+                                    <i class="fab fa-golang mr-1"></i>
+                                    <i class="fab fa-html5 mr-1"></i>
+                                    <i class="fab fa-rust mr-1"></i>
+                                    <i class="fab fa-php mr-1"></i>
+                                    <i class="fab fa-swift mr-1"></i>
+                                    <i class="fab fa-r-project mr-1"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="Section-Generate_question" class="card new-card mb-4 mt-4 slide-up">
+                        <div class="card-header">
+                            Generate Question</div>
+                        <div class="card-body">
+                            <p onclick="window.open('https://toolsaday.com/writing/questions-generator', '_blank')" class="shadow" style="  cursor: pointer;font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; background-color: #333; padding: 15px; border-radius: 12px; margin: 5px; color: #73ed51; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); text-align: center;border:solid green;">
+                                Click here to <span style="color: #f25805; font-weight: bold;">'Generate question'</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="Section-Additonal-features" class="card new-card mb-4 mt-4 slide-up">
+                        <div class="card-header">
+                            Additonal Features</div>
+                        <div class="card-body">
+                            <p onclick="window.open('https://sitescollection.ccbp.tech/', '_blank')" class="shadow" style="  cursor: pointer;font-family: Arial, sans-serif; font-size: 14px; line-height: 1.5; background-color: #333; padding: 15px; border-radius: 12px; margin: 5px; color: #73ed51; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); text-align: center;border:solid green;">
+                                Click here to see <span style="color: #f25805; font-weight: bold;">'AI Tools Collection'</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="Section-FAQ" class="card new-card mb-4 mt-4 slide-up">
+                        <div class="card-header">FAQ</div>
+                        <div class="card-body">
+                            <div class="accordion" id="accordionExample">
+                                <!-- Question 1 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            What is Beam Focus 3.0?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            Beam Focus 3.0 is a comprehensive learning platform designed to help you learn new skills and build a strong foundation in your chosen field. It combines features like personalized study paths, code playground, watchlist, and integrated learning tools to provide a streamlined learning experience.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 2 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            How do I generate a study path?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            To generate a study path automatically, simply enter the topic, language, and desired difficulty level. After that, for the manual step, copy the study path from Perplexity AI, return to the site, and paste it (including the YouTube links) into the "Manually Add Study Path" text area. Finally, save your study path. (For a clearer understanding, refer to the tutorial.)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 3 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            How do I save study paths?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            After generating or creating a study path, click the "Save Study Path" button. This will save the path to your local storage, so you can access it later.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Additional Questions Collapse Section -->
+                                <div id="moreQuestions" class="collapse">
+                                    <!-- Question 4 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                What is the "Watchlist" feature?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                The Watchlist lets you save interesting YouTube videos or other video links for later viewing. Simply paste the video link into the input field and click "Add to Watchlist."
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 5 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFive">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                What is the "Code Playground" for?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                The Code Playground provides access to online compilers for various programming languages. You can practice coding, test your code, and get familiar with different languages.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 6 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSix">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                                How do I mark a video as watched?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                When you finish watching a video in a study path, click the "Click When You Have Completed The Full Playlist" button. This will mark the video as watched and help you track your progress.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 7 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSeven">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                                What is the "Streak" feature?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                The Streak feature tracks your daily learning activity. By consistently using Beam Focus, you can build a streak and motivate yourself to stay on track with your goals.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 8 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingEight">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                                How do I use the "Notepad" feature?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                The Notepad lets you jot down notes, thoughts, or ideas while learning. You can access your notepad through the "Notepad" button or from the sidebar.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 9 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingNine">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                                How do I ask a doubt?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                Use the "Ask Doubt" button to access an external platform where you can ask questions and receive assistance from Artificial intelligence.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 10 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTen">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                                How do I access the community?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                You can join the Beam Focus community through the Telegram link provided in the sidebar.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 11 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingEleven">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                                                How do I access the tutorial video?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseEleven" class="accordion-collapse collapse" aria-labelledby="headingEleven" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                For help using any specific feature, you can access tutorial videos by clicking the "Tutorial" button associated with that feature.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 12 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwelve">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
+                                                Can I edit the saved study path?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwelve" class="accordion-collapse collapse" aria-labelledby="headingTwelve" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                Yes, you can edit the saved study path's name and text by using the "Edit Name" and "Edit" buttons.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 13 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThirteen">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirteen">
+                                                What happens when I complete a study path?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThirteen" class="accordion-collapse collapse" aria-labelledby="headingThirteen" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                Upon completing a study path, a modal will pop up displaying your completion ID and a certificate. You can copy the completion ID for future reference.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 14 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFourteen">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFourteen" aria-expanded="false" aria-controls="collapseFourteen">
+                                                What are the benefits of using Beam Focus 3.0?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFourteen" class="accordion-collapse collapse" aria-labelledby="headingFourteen" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                Beam Focus 3.0 offers several benefits:
+                                                <ul>
+                                                    <li>Personalized Learning: Customized study paths based on your needs.</li>
+                                                    <li>Effective Tracking: Tracks your progress, completion status, and learning streak.</li>
+                                                    <li>Integrated Tools: Access to code playgrounds, notepads, and doubt-solving resources.</li>
+                                                    <li>Community Support: Connect with other learners and get assistance.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Question 15 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFifteen">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFifteen" aria-expanded="false" aria-controls="collapseFifteen">
+                                                How do I get started?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFifteen" class="accordion-collapse collapse" aria-labelledby="headingFifteen" data-bs-parent="#moreQuestions">
+                                            <div class="accordion-body">
+                                                Start exploring the features of Beam Focus 3.0. Use the "Generate Study Path" feature to create a study path based on your current learning goals.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Show More Questions Button -->
+                                <button class="btn btn-primary m-2" type="button" data-bs-toggle="collapse" data-bs-target="#moreQuestions" aria-expanded="false" aria-controls="moreQuestions">
+                                    More Questions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-container">
+            <nav class="sidebar" id="sidebar">
+                <p class="text" style="padding:10px;">Shortcuts :</p>
+                <a href="#Section-Study_path"><i class="fa-solid fa-school"></i><span class="ml-4">Study Path</span></a>
+                <a href="#Section-Watchlist"><i class="fas fa-video"></i><span class="ml-4">Watchlist</span></a>
+                <a href="#Section-Code_playground"><i class="fas fa-code"></i><span class="ml-4">Code Playground</span></a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#streakModal"><i class="bi bi-fire text-warning"></i><span class="ml-4 text-info">Streak</span> </a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#notepadModal"><i class="bi bi-journal-text text-success"></i><span class="ml-4 text-info">Notepad</span></a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#doubtModal"><i class="bi bi-question-circle text-danger"></i><span class="ml-4 text-info">Ask Doubt</span></a>
+                <a href="#Section-Generate_question" onclick="window.open('https://toolsaday.com/writing/questions-generator', '_blank')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20" height="20">
+                        <path fill="blue" d="M192 0c-41.8 0-77.4 26.7-90.5 64L64 64C28.7 64 0 92.7 0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-37.5 0C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM105.8 229.3c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L216 328.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM160 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
+                    </svg>
+                    <span class="ml-4">Generate Question</span></a>
+                <a href="#Section-Additonal-features"><i class="fa-regular fa-star"></i><span class="ml-4">Additonal Features</span></a>
+                <a href="https://t.me/+udqkBpUBm4A4YmFl" target="_blank"><i class="bi bi-telegram"></i><span class="ml-4">Join Community</span></a>
+                <a href="#Section-FAQ"><i class="fa-solid fa-circle-question"></i><span class="ml-4">FAQ</span></a>
+                <a href="https://beamfocus.ccbp.tech/" target="_blank"><i class="fa-regular fa-comments"></i><span class="ml-4">Learn More</span></a>
+            </nav>
+            <button class="sidebar-toggler btn btn-primary" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="footer-container card-header">
+                <p style="margin: 0; font-family: 'Arial', sans-serif;">
+                    Developed by <strong style="text-shadow: 2px 2px 0 white, -2px -2px 0 white;">S. A. M.</strong>
+                </p>
+            </div>
+            <a class="text-center font-italic" href="https://beamfocus.ccbp.tech/" target="_blank">
+                Learn more about 'Beam Focus'</a>
+        </div>
+        <!--timer-container-->
+        <div id="timer-widget">
+            <div id="timer-popup">
+                <button class="close-button btn">×</button>
+                <header>Timer</header>
+                <div class="time-input">
+                    <input type="number" id="minutes" placeholder="Min" min="0" value="15">
+                    <input type="number" id="seconds" placeholder="Sec" min="0" max="59" value="00">
+                </div>
+                <button id="start-timer">Start</button>
+                <div class="timer-display"></div>
+                <div class="timer-controls">
+                    <button id="pause-timer" class="btn btn-warning">Pause</button>
+                    <button id="resume-timer" class="btn btn-primary">Resume</button>
+                    <button id="reset-timer" class="btn btn-danger">Reset</button>
+                </div>
+            </div>
+            <audio id="alarm-sound" src="https://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a" preload="auto"></audio>
+        </div>
+        <!--AccountModal-->
+        <div class="modal fade" id="AccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Profile Settings</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe src="https://profilebmfcs.ccbp.tech/" style="width: 100%; height: 400px;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Path Text Modal -->
+        <div class="modal fade" id="editPathModal" tabindex="-1" aria-labelledby="editPathModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPathModalLabel">Edit Study Path Text</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="editPathTextArea" class="form-control" style="resize: none;
+                                height: 70vh;
+                                border: 1px solid #ccc;
+                                border-radius: 5px;
+                                padding: 10px;" placeholder="Edit Study Path Text">
+                        </textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success" onclick="updatePathText()">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal structure -->
+        <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="width: 100%; max-width: 600px; margin: auto;">
+                <div class="modal-content" style="max-height: 100vh;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="videoModalLabel">Video Tutorial</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="ratio ratio-16x9" style="height: 90vh;">
+                            <iframe src="https://res.cloudinary.com/dmttn34te/image/upload/f_auto,q_auto/ng6lwimuujlasoumhe6w" style="border: none;"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Streak Modal -->
+        <div class="modal fade streak-modal" id="streakModal" tabindex="-1" role="dialog" aria-labelledby="streakModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="streakModalLabel">Your Learning Streak</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="streakIframe" src="https://streakbeamfocus.ccbp.tech" style="width: 100%; height: 80vh;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Notepad Modal -->
+        <div class="modal fade notepad-modal" id="notepadModal" tabindex="-1" role="dialog" aria-labelledby="notepadModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notepadModalLabel">Notes</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="notepadIframe" src="https://notepad2bmfcs.ccbp.tech/" style="width: 100%; height: 80vh;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Doubt Modal -->
+        <div class="modal fade doubt-modal" id="doubtModal" tabindex="-1" role="dialog" aria-labelledby="doubtModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content" style="height: 90vh;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="doubtModalLabel">Ask Your Doubt</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="doubtIframe" src="https://myninja.ai/" style="width: 100%; height: 100%;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Notice Modal - using Bootstrap -->
+        <div class="modal fade" id="mobileNoticeModal" tabindex="-1" aria-labelledby="mobileNoticeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mobileNoticeModalLabel">Notice: For Mobile User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <strong class="text-warning"> Only if you have installed Perplexity AI application !</strong><br>
+                        <strong class="text-info">Follow steps as shown in video </strong><br>
+                        <p class="text-danger"> [If not working till now , 'Uninstall' the app]</p>
+                        <div class="video-container">
+                            <iframe src="https://res.cloudinary.com/dmttn34te/image/upload/v1730663089/ezgif-2-a79131fbd4_u3tkcu.gif" frameborder="0" allowfullscreen autoplay></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade completion-modal" id="completionModal" tabindex="-1" aria-labelledby="completionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="completionModalLabel">Congratulations!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You have completed the study path: <strong id="completedPathName"></strong></p>
+                        <p>Your Completion ID: <strong id="completionID"></strong></p>
+                        <button id="copyCompletionIDBtn">Copy Completion ID</button>
+                        <iframe id="certificationIframe" src="https://certification.ccbp.tech/" style="width: 100%; height: 460px;border-radius:10px;border:solid 2px green;"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('deleteAllButton').addEventListener('click', deleteAllPaths);
+
+        const topicInput = document.getElementById('topicInput');
+        const languageSelect = document.getElementById('languageSelect');
+        const customLanguageDiv = document.getElementById('customLanguageDiv');
+        const customLanguageInput = document.getElementById('customLanguageInput');
+        const difficultySelect = document.getElementById('difficultySelect');
+        const generatePromptBtn = document.getElementById('generatePromptBtn');
+        const saveStudyPathBtn = document.getElementById('saveStudyPathBtn');
+        const studyPathInput = document.getElementById('studyPathInput');
+        const savedPathsList = document.getElementById('savedPaths');
+        const playlistDiv = document.getElementById('playlist');
+        const themeButton = document.getElementById('themeButton');
+        const completionModal = document.getElementById('completionModal');
+        const completedPathNameElement = document.getElementById('completedPathName');
+        const completionIDElement = document.getElementById('completionID');
+        const copyCompletionIDBtn = document.getElementById('copyCompletionIDBtn');
+        const editPathTextArea = document.getElementById('editPathTextArea');
+        const editPathModal = document.getElementById('editPathModal');
+        const modalBackground = document.querySelector('.modal-background');
+        const videoLinkInput = document.getElementById('videoLinkInput');
+        const addToWatchlistBtn = document.getElementById('addToWatchlistBtn');
+        const playVideoBtn = document.getElementById('playVideoBtn');
+        const watchlistItems = document.getElementById('watchlistItems');
+        const dashboardGreeting = document.getElementById('greeting');
+        const recentPathsList = document.getElementById('recentPaths');
+        const recentWatchlistList = document.getElementById('recentWatchlist');
+        const searchPathInput = document.getElementById('searchPath');
+        const searchWatchlistInput = document.getElementById('searchWatchlist');
+        const pasteButton = document.getElementById('pasteButton');
+        let studyPaths = JSON.parse(localStorage.getItem('manualStudyPaths')) || [];
+        let currentEditingPathIndex = null;
+        let isDarkMode = false;
+        let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+        languageSelect.addEventListener('change', function() {
+            customLanguageDiv.style.display = languageSelect.value === 'Other' ? 'block' : 'none';
+        });
+
+        generatePromptBtn.addEventListener('click', function() {
+            const topic = topicInput.value.trim();
+            const language = languageSelect.value === 'Other' ? customLanguageInput.value : languageSelect.value;
+            const difficulty = difficultySelect.value;
+
+            if (!topic || !language || !difficulty) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            const prompt = `Generate a YouTube learning path for learning about ${topic} in ${language}. Make it ${difficulty}-level and always use trending, latest and most reliable resources available online. 1. Start replying with a heading title by topic name,( this will be in four words only and alaways in english must and don't use any # or something before it). 2. Start by recommendations for two reliable websites with links. 3. Then, suggest two top YouTube channels with links. 4. Lastly, provide a step-by-step guide using YouTube links exclusively. Give all the link as simple text.`;
+
+            // Get selected search engine from radio buttons
+            const searchEngine = document.querySelector('input[name="searchEngine"]:checked').value;
+            let searchUrl;
+
+            if (searchEngine === 'perplexity') {
+                searchUrl = `https://www.perplexity.ai/search?q=${encodeURIComponent(prompt)}`;
+            } else if (searchEngine === 'chatGPT') {
+                searchUrl = `https://chatgpt.com/?hints=search&q=${encodeURIComponent(prompt)}`;
+            }
+
+            // Open the selected search engine with the generated prompt
+            window.open(searchUrl, '_blank', 'width=800,height=600');
+        });
+
+        pasteButton.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                studyPathInput.value = text;
+            } catch (err) {
+                console.error('Failed to read clipboard contents: ', err);
+            }
+        });
+        saveStudyPathBtn.addEventListener('click', function() {
+            const studyPath = studyPathInput.value;
+            if (studyPath) {
+                const youtubeVideos = TubeLinks(studyPath);
+                const pathName = studyPath.trim().split(/\s+/).slice(0, 4).join(' ');
+                const pathObject = {
+                    name: pathName,
+                    text: studyPath,
+                    youtubeVideos: youtubeVideos,
+                    videoStatus: {}
+                };
+
+                studyPaths.push(pathObject);
+                localStorage.setItem('manualStudyPaths', JSON.stringify(studyPaths));
+                displaySavedPaths();
+                displayRecentStudyPaths();
+                studyPathInput.value = '';
+            }
+        });
+
+        function TubeLinks(text) {
+            const youtubeLinks = [];
+            const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
+            let match;
+
+            while ((match = youtubeRegex.exec(text)) !== null) {
+                youtubeLinks.push(match[1]);
+            }
+
+            return youtubeLinks;
+        }
+
+        function linkify(text) {
+            return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>').replace(/\n/g, '<br>');
+        }
+
+        function displaySavedPaths() {
+            const searchTerm = searchPathInput.value.toLowerCase();
+            savedPathsList.innerHTML = '';
+            studyPaths.filter(path => path.name.toLowerCase().includes(searchTerm)).forEach((path, index) => {
+                const li = document.createElement('li');
+                li.classList.add('list-group-item');
+                li.id = `path-item-${index}`;
+
+                const collapsibleDiv = document.createElement('div');
+                collapsibleDiv.classList.add('collapse');
+                collapsibleDiv.id = `collapse-${index}`;
+                collapsibleDiv.innerHTML = linkify(path.text);
+
+                li.innerHTML = `
+                    <div class="path-name-container">
+                        <strong class="border border-warning p-1 rounded text-uppercase" id="path-name-${index}">${path.name}</strong>
+                        <div class="save-edit-delete">
+                            <button class="btn btn-warning btn-sm" onclick="editPathName(${index})"><i class="bi bi-pen"></i></button>
+                            <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editPathModal" onclick="editPathText(${index})"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-danger btn-sm" onclick="deletePath(${index})"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                    <button class="btn btn-link border border-primary  p-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${index}" aria-expanded="false" aria-controls="collapse-${index}">
+                        <i class="bi bi-chevron-expand"></i> 
+                    </button>
+                    <button class="btn btn-link text-decoration-none text-monospace border border-danger p-1" onclick="createPlaylist(${index})"><i class="bi bi-youtube"></i> Playlist</button>
+                    ${collapsibleDiv.outerHTML} 
+                `;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.textContent = 'Copy';
+                copyBtn.classList.add('copy-btn');
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(path.text)
+                        .then(() => {
+                            copyBtn.textContent = 'Copied!';
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy';
+                            }, 1500);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                });
+                li.querySelector('.path-name-container').appendChild(copyBtn);
+                savedPathsList.appendChild(li);
+            });
+        }
+
+        function deletePath(index) {
+            studyPaths.splice(index, 1);
+            localStorage.setItem('manualStudyPaths', JSON.stringify(studyPaths));
+            displaySavedPaths();
+        }
+
+        function deleteAllPaths() {
+            localStorage.removeItem('manualStudyPaths');
+            studyPaths = [];
+            displaySavedPaths();
+        }
+
+        function editPathName(index) {
+            const pathNameElement = document.getElementById(`path-name-${index}`);
+            const oldName = pathNameElement.textContent;
+            const newName = prompt("Edit study path name:", oldName);
+
+            if (newName !== null && newName.trim() !== "") {
+                studyPaths[index].name = newName;
+                localStorage.setItem('manualStudyPaths', JSON.stringify(studyPaths));
+                pathNameElement.textContent = newName;
+            }
+        }
+
+        function editPathText(index) {
+            currentEditingPathIndex = index;
+            const path = studyPaths[index];
+            editPathTextArea.value = path.text;
+        }
+
+        function updatePathText() {
+            const newText = editPathTextArea.value;
+            if (newText !== null && newText.trim() !== "") {
+                studyPaths[currentEditingPathIndex].text = newText;
+                studyPaths[currentEditingPathIndex].youtubeVideos = TubeLinks(newText);
+                localStorage.setItem('manualStudyPaths', JSON.stringify(studyPaths));
+                displaySavedPaths();
+
+                // Add animation to the Edit Modal Save Button
+                const saveButton = editPathModal.querySelector('.btn-success');
+                saveButton.classList.add('saving-changes');
+                setTimeout(() => {
+                    saveButton.classList.remove('saving-changes');
+                }, 1500);
+            }
+        }
+
+        function createPlaylist(index) {
+            const path = studyPaths[index];
+            let videos = path.youtubeVideos;
+            videos = [...new Set(videos)];
+
+            playlistDiv.querySelector('.playlist-row').innerHTML = '';
+
+            let videoIndex = 0;
+            videos.forEach((videoID, rank) => {
+                const iframe = document.createElement('iframe');
+                iframe.width = '560';
+                iframe.height = '315';
+                iframe.src = `https://www.youtube.com/embed/${videoID}`;
+                iframe.id = `video-${index}-${videoIndex}`;
+                iframe.title = "YouTube video player";
+                iframe.frameBorder = '0';
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+                iframe.classList.add('video-embed');
+
+                const videoEmbedDiv = document.createElement('div');
+                videoEmbedDiv.classList.add('video-embed', 'playlist-item');
+                videoEmbedDiv.innerHTML = `
+                    <i class="watched-icon hidden"></i>
+                    <h5 class="video-title hidden">Video ${rank + 1}</h5>
+                    <button class="mark-watched-btn" onclick="toggleVideoWatched('${videoID}', ${index})">
+                        Click When You Have Completed The Full Playlist
+                    </button>
+                `;
+                videoEmbedDiv.appendChild(iframe);
+
+                // Check if video is watched and add the icon
+                const videoWatched = path.videoStatus[videoID] || false;
+                if (videoWatched) {
+                    videoEmbedDiv.classList.add('watched');
+                }
+
+                // Add the video to the correct column in the playlist-row
+                const playlistRow = playlistDiv.querySelector('.playlist-row');
+                const col = document.createElement('div');
+                col.classList.add('col-md-6', 'small-screen');
+                col.appendChild(videoEmbedDiv);
+                playlistRow.appendChild(col);
+
+                videoIndex++;
+            });
+
+            playlistDiv.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function toggleVideoWatched(videoID, pathIndex) {
+            const path = studyPaths[pathIndex];
+            const videoEmbedDiv = document.querySelector(`iframe[id^="video-${pathIndex}"]`).parentElement;
+            const markWatchedButton = videoEmbedDiv.querySelector('.mark-watched-btn');
+
+            if (path.videoStatus[videoID]) {
+                // Unmark watched
+                path.videoStatus[videoID] = false;
+                videoEmbedDiv.classList.remove('watched');
+                markWatchedButton.classList.remove('unmarked');
+                markWatchedButton.textContent = 'Click When You Have Completed The Full Playlist';
+            } else {
+                // Mark watched - only allow marking once
+                path.videoStatus[videoID] = true;
+                videoEmbedDiv.classList.add('watched');
+                markWatchedButton.classList.add('unmarked');
+                markWatchedButton.textContent = 'Unmark Watched';
+
+                // Show completion modal if all videos are marked watched
+                if (checkPathCompletion(path)) {
+                    showCompletionModal(path);
+                }
+            }
+
+            localStorage.setItem('manualStudyPaths', JSON.stringify(studyPaths));
+        }
+
+        function updateVideoStatus(path, videoID, newStatus) {
+            path.videoStatus[videoID] = newStatus;
+            localStorage.setItem('manualStudyPaths', JSON.stringify(studyPaths));
+
+            if (checkPathCompletion(path)) {
+                showCompletionModal(path);
+            }
+        }
+
+        function checkPathCompletion(path) {
+            return Object.values(path.videoStatus).every(status => status === true);
+        }
+
+        function showCompletionModal(path) {
+            const completionID = generateCompletionID(path.name);
+            completedPathNameElement.textContent = path.name;
+            completionIDElement.textContent = completionID;
+            const certificationIframe = document.getElementById('certificationIframe');
+            certificationIframe.src = 'https://certification.ccbp.tech/';
+
+            const modal = new bootstrap.Modal(completionModal);
+            modal.show();
+        }
+
+        function generateCompletionID(pathName) {
+            const shortName = pathName.split(' ').slice(0, 4).join('_');
+            const randomNumbers = Math.floor(10000000 + Math.random() * 90000000);
+            return shortName + '-' + randomNumbers;
+        }
+        // Add this function to handle copying the Completion ID
+        function copyCompletionID() {
+            const completionID = completionIDElement.textContent;
+            if (completionID) {
+                navigator.clipboard.writeText(completionID)
+                    .then(() => {
+                        alert('Completion ID copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        alert('Failed to copy Completion ID. Please try again.'); //Show user an error message
+                    });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add event listener to the copy button
+            const copyCompletionIDBtn = document.getElementById('copyCompletionIDBtn');
+            if (copyCompletionIDBtn) {
+                copyCompletionIDBtn.addEventListener('click', copyCompletionID);
+            }
+        });
+
+        // Theme Button Functionality
+        themeButton.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            themeButton.classList.toggle('active', isDarkMode);
+            document.body.classList.toggle('dark-mode', isDarkMode);
+
+            // Update the icon based on the theme
+            const icon = themeButton.querySelector('i');
+            icon.className = isDarkMode ? 'bi bi-moon-fill' : 'bi bi-brightness-high-fill';
+
+            // Update local storage
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+
+        // Watchlist Functionality
+        addToWatchlistBtn.addEventListener('click', () => {
+            const videoLink = videoLinkInput.value.trim();
+            if (videoLink) {
+                const videoId = extractVideoId(videoLink);
+                if (videoId) {
+                    const newWatchlistItem = {
+                        id: videoId,
+                        link: videoLink,
+                        order: watchlist.length + 1 // Assign a number
+                    };
+                    watchlist.push(newWatchlistItem);
+                    localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                    displayWatchlist();
+                    displayRecentWatchlist();
+                    videoLinkInput.value = '';
+                } else {
+                    alert("Invalid video link. Please provide a valid YouTube or supported video link.");
+                }
+            }
+        });
+        playVideoBtn.addEventListener('click', () => {
+            const videoLink = videoLinkInput.value.trim();
+            if (videoLink) {
+                const videoId = extractVideoId(videoLink);
+                if (videoId) {
+                    playWatchlistVideo(videoId);
+                } else {
+                    alert("Invalid video link. Please provide a valid YouTube or supported video link.");
+                }
+            }
+        });
+
+        function extractVideoId(link) {
+            // Regular expression to match YouTube video IDs
+            const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/g;
+            const match = youtubeRegex.exec(link);
+            return match ? match[1] : null;
+        }
+
+        function displayWatchlist() {
+            const searchTerm = searchWatchlistInput.value.toLowerCase();
+            watchlistItems.innerHTML = '';
+            watchlist.filter(item => item.link.toLowerCase().includes(searchTerm)).forEach((item, index) => {
+                const li = document.createElement('li');
+                li.classList.add('list-group-item', 'watchlist-item');
+                li.innerHTML = `
+                    <div>
+                        <strong>${item.order}.</strong>
+                        <button class="play-watchlist-btn" onclick="playWatchlistVideo('${item.id}')">Play</button>
+                        <button class="delete-watchlist-btn" onclick="removeFromWatchlist(${index})">Delete</button>
+                    </div>
+                    <div class="path-name-container">
+                        <a href="${item.link}" target="_blank" class="video-title">${item.link}</a>
+                    </div>
+          `;
+                watchlistItems.appendChild(li);
+            });
+        }
+
+        function displayRecentWatchlist() {
+            recentWatchlistList.innerHTML = '';
+            watchlist.slice(-3).forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${item.link}" target="_blank" class="text-monospace text-info text-decoration-none">${item.link}</a>`
+                recentWatchlistList.appendChild(li);
+            });
+        }
+
+        function displayRecentStudyPaths() {
+            recentPathsList.innerHTML = '';
+            studyPaths.slice(-3).forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = ` <a href="#playlist" onclick="createPlaylist(${studyPaths.indexOf(item)})" class="text-monospace text-info text-decoration-none"> ${item.name}</a>`;
+                recentPathsList.appendChild(li);
+            });
+        }
+
+        function removeFromWatchlist(index) {
+            watchlist.splice(index, 1);
+            // Re-order watchlist items
+            watchlist.forEach((item, i) => {
+                item.order = i + 1;
+            });
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            displayWatchlist();
+            displayRecentWatchlist();
+        }
+
+        function playWatchlistVideo(videoId) {
+            // Create a modal for playing the video
+            const videoModal = document.createElement('div');
+            videoModal.classList.add('modal', 'fade');
+            videoModal.id = 'videoModal';
+            videoModal.setAttribute('tabindex', '-1');
+            videoModal.setAttribute('aria-labelledby', 'videoModalLabel');
+            videoModal.setAttribute('aria-hidden', 'true');
+            videoModal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="videoModalLabel">Video</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="video-iframe-container">
+                                <iframe class="video-iframe" src="https://www.youtube.com/embed/${videoId}" frameborder="0" width="100%" height="400px" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Append the modal to the body
+            document.body.appendChild(videoModal);
+
+            // Initialize the modal
+            const modal = new bootstrap.Modal(videoModal);
+            modal.show();
+        }
+
+        // ... (rest of your JavaScript code) ...
+
+        // Show/Hide Modal Background
+        const showModalBackground = () => {
+            modalBackground.classList.add('show');
+        };
+
+        const hideModalBackground = () => {
+            modalBackground.classList.remove('show');
+        };
+
+        // Add event listeners for modal events
+        editPathModal.addEventListener('show.bs.modal', showModalBackground);
+        editPathModal.addEventListener('hidden.bs.modal', hideModalBackground);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeEnabled = JSON.parse(localStorage.getItem('darkMode'));
+            if (darkModeEnabled) {
+                document.body.classList.add('dark-mode');
+                themeButton.classList.add('active');
+                const icon = themeButton.querySelector('i');
+                icon.className = 'bi bi-moon-fill';
+            }
+            displayGreeting();
+            displaySavedPaths();
+            displayWatchlist();
+            displayRecentWatchlist();
+            displayRecentStudyPaths();
+
+            searchPathInput.addEventListener('input', displaySavedPaths);
+            searchWatchlistInput.addEventListener('input', displayWatchlist)
+            // Initialize SortableJS for the watchlist
+            const watchlistItemsElement = document.getElementById('watchlistItems');
+            Sortable.create(watchlistItemsElement, {
+                onUpdate: function(evt) {
+                    // Get new order based on UI
+                    const newOrder = Array.from(watchlistItemsElement.children).map((item, index) => {
+                        const videoLink = item.querySelector('.video-title').textContent;
+                        const itemToUpdate = watchlist.find(item => item.link == videoLink);
+                        itemToUpdate.order = index + 1
+                        return itemToUpdate;
+                    });
+                    // Update and save order
+                    watchlist = newOrder;
+                    localStorage.setItem('watchlist', JSON.stringify(watchlist));
+                    displayWatchlist();
+                }
+            });
+        });
+
+        function displayGreeting() {
+            const now = new Date();
+            const hours = now.getHours();
+            let greetingText;
+
+            if (hours < 12) {
+                greetingText = 'Good Morning!';
+            } else if (hours < 18) {
+                greetingText = 'Good Afternoon!';
+            } else {
+                greetingText = 'Good Evening!';
+            }
+
+            dashboardGreeting.textContent = greetingText;
+        }
+
+        function openLink(select) {
+            const url = select.value;
+            if (url && url !== "#") {
+                window.open(url, '_blank');
+            }
+        }
+
+        // Function to toggle the sidebar
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timerButton = document.getElementById('timer-button');
+            const timerPopup = document.getElementById('timer-popup');
+            const closeButton = document.querySelector('.close-button');
+            const startTimerButton = document.getElementById('start-timer');
+            const pauseTimerButton = document.getElementById('pause-timer');
+            const resumeTimerButton = document.getElementById('resume-timer');
+            const resetTimerButton = document.getElementById('reset-timer');
+            const timerDisplay = document.querySelector('.timer-display');
+            const alarmSound = document.getElementById('alarm-sound');
+
+            let timerInterval;
+            let timeRemaining;
+            let isPaused = false;
+
+            timerButton.addEventListener('click', () => {
+                timerPopup.style.display = timerPopup.style.display === 'block' ? 'none' : 'block';
+            });
+
+            closeButton.addEventListener('click', () => {
+                timerPopup.style.display = 'none';
+            });
+
+            startTimerButton.addEventListener('click', () => {
+                const minutes = parseInt(document.getElementById('minutes').value, 10);
+                const seconds = parseInt(document.getElementById('seconds').value, 10);
+                timeRemaining = minutes * 60 + seconds;
+
+                if (isNaN(timeRemaining) || timeRemaining <= 0) {
+                    alert('Please enter a valid time.');
+                    return;
+                }
+
+                timerInterval = setInterval(updateTimer, 1000);
+                updateDisplay(timeRemaining);
+                startTimerButton.disabled = true;
+                pauseTimerButton.disabled = false;
+                resumeTimerButton.disabled = true;
+                resetTimerButton.disabled = false;
+                isPaused = false;
+            });
+
+            pauseTimerButton.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                isPaused = true;
+                pauseTimerButton.disabled = true;
+                resumeTimerButton.disabled = false;
+            });
+
+            resumeTimerButton.addEventListener('click', () => {
+                isPaused = false;
+                timerInterval = setInterval(updateTimer, 1000);
+                pauseTimerButton.disabled = false;
+                resumeTimerButton.disabled = true;
+            });
+
+            resetTimerButton.addEventListener('click', resetTimer);
+
+            function updateTimer() {
+                if (!isPaused) {
+                    timeRemaining--;
+                    updateDisplay(timeRemaining);
+
+                    // Play alarm sound 0.5 seconds before timer ends
+                    if (timeRemaining === 1) {
+                        alarmSound.play();
+                    }
+                }
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert('Time is up!');
+                    resetTimer();
+                }
+            }
+
+            function updateDisplay(time) {
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            function resetTimer() {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = '00:00';
+                startTimerButton.disabled = false;
+                pauseTimerButton.disabled = true;
+                resumeTimerButton.disabled = true;
+                resetTimerButton.disabled = true;
+                isPaused = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
